@@ -75,10 +75,20 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 		// Get the gateway from the configuration
 		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
 
-		// Data
-		$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( $atts );
-
 		if ( $gateway ) {
+			// Data
+			$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( $atts );
+
+			// Hash
+			$hash_data = array(
+				'order_id'    => $atts['order_id'],
+				'period'      => $atts['period'],
+				'cost'        => $atts['cost'],
+				'level'       => $atts['level'],
+				'description' => $atts['description'],
+			);
+
+			// Output
 			$output .= '<form method="post" action="">';
 
 			if ( ! is_user_logged_in() ) {
@@ -102,7 +112,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			$output .= ' ';
 
 			$output .= Pronamic_IDeal_IDeal::htmlHiddenFields( array(
-				'pronamic_pay_s2member_hash'              => $this->create_hash( $atts ),
+				'pronamic_pay_s2member_hash'              => $this->create_hash( $hash_data ),
 				'pronamic_pay_s2member_data[order_id]'    => $atts['order_id'],
 				'pronamic_pay_s2member_data[period]'      => $atts['period'],
 				'pronamic_pay_s2member_data[cost]'        => $atts['cost'],

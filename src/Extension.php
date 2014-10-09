@@ -9,12 +9,19 @@
  * @since 1.2.6
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Extension {
-
+	/**
+	 * Bootstrap
+	 */
 	public static function bootstrap() {
-		add_action( 'plugins_loaded', array( __CLASS__, 'load' ), 100 );
+		add_action( 'plugins_loaded', array( __CLASS__, 'plugins_loaded' ), 100 );
 	}
 
-	public static function load() {
+	//////////////////////////////////////////////////
+
+	/**
+	 * Plugins loaded
+	 */
+	public static function plugins_loaded() {
 		if ( Pronamic_WP_Pay_Extensions_S2Member_S2Member::is_active() ) {
 			// Bridge Classes
 			new Pronamic_WP_Pay_Extensions_S2Member_Order();
@@ -29,6 +36,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 			add_filter( "pronamic_payment_source_text_$slug",   array( __CLASS__, 'source_text' ), 10, 2 );
 		}
 	}
+
+	//////////////////////////////////////////////////
 
 	public static function update_status_unknown_to_success( Pronamic_Pay_Payment $payment, $can_redirect = false ) {
 		$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( array(

@@ -34,7 +34,7 @@
 	],
 	"require": {
 		"php": ">=5.2.4",
-		"wpackagist-plugin/s2member": "1.12",
+		"wpackagist-plugin/s2member": "141007",
 		"wp-pay/core": "dev-develop"
 	},
 	"require-dev": {

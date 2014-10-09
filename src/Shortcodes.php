@@ -59,6 +59,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			'cost'        => null,
 			'level'       => null,
 			'description' => __( 'iDEAL s2Member Payment || {{order_id}}', 'pronamic_ideal' ),
+			'button_text' => __( 'Pay', 'pronamic_ideal' ),
 		);
 
 		// Combine the passed options
@@ -112,7 +113,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			$output .= sprintf(
 				'<input name="%s" value="%s" type="submit" />',
 				esc_attr( 'pronamic_pay_s2member' ),
-				esc_attr__( 'Pay with iDEAL', 'pronamic_ideal' )
+				esc_attr( $atts['button_text'] )
 			);
 
 			$output .= '</form>';

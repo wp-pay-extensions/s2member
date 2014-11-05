@@ -123,23 +123,23 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 		$url = $data->get_normal_return_url();
 
 		switch ( $payment->status ) {
-			case Pronamic_Gateways_IDealAdvanced_Transaction::STATUS_CANCELLED:
+			case Pronamic_WP_Pay_Statuses::CANCELLED :
 				$url = $data->get_cancel_url();
 
 				break;
-			case Pronamic_Gateways_IDealAdvanced_Transaction::STATUS_EXPIRED:
+			case Pronamic_WP_Pay_Statuses::EXPIRED :
 				$url = $data->get_error_url();
 
 				break;
-			case Pronamic_Gateways_IDealAdvanced_Transaction::STATUS_FAILURE:
+			case Pronamic_WP_Pay_Statuses::FAILURE :
 				$url = $data->get_error_url();
 
 				break;
-			case Pronamic_Gateways_IDealAdvanced_Transaction::STATUS_SUCCESS:
+			case Pronamic_WP_Pay_Statuses::SUCCESS :
 				$url = $data->get_success_url();
 
 				break;
-			case Pronamic_Gateways_IDealAdvanced_Transaction::STATUS_OPEN:
+			case Pronamic_WP_Pay_Statuses::OPEN :
 				$url = $data->get_normal_return_url();
 
 				break;

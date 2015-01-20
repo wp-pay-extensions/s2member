@@ -34,8 +34,8 @@
 	],
 	"require": {
 		"php": ">=5.2.4",
-		"wpackagist-plugin/s2member": "1.12",
-		"wp-pay/core": "dev-develop"
+		"wpackagist-plugin/s2member": "141007",
+		"wp-pay/core": "~1.0.0"
 	},
 	"require-dev": {
 		"satooshi/php-coveralls": "dev-master"

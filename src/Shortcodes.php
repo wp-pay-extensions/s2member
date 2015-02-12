@@ -1,15 +1,24 @@
 <?php
 
 /**
- * s2Member shortcodes
- *
- * Handles the generation and interpretation of
- * shortcodes for use in S2 Member
- *
- * @author Leon Rowland <leon@rowland.nl>
- * @since 1.2.6
+ * Title: s2Member shortcodes
+ * Description:
+ * Copyright: Copyright (c) 2005 - 2015
+ * Company: Pronamic
+ * @author Leon Rowland
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
+	/**
+	 * Index to identify shortcodes
+	 */
+	private $index = 0;
+
+	/**
+	 * Payment errors
+	 */
+	private $error = array();
+
 	/**
 	 * Constructs and initializes s2Member pay shortcodes
 	 */
@@ -54,6 +63,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 	 * @param array $atts All arguments inside the shortcode
 	 */
 	public function shortcode_pay( $atts ) {
+		$this->index++;
+
 		$defaults = array(
 			'period'      => null,
 			'cost'        => null,
@@ -89,6 +100,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			);
 
 			// Output
+			$output .= $this->payment_error();
+
 			$output .= '<form method="post" action="">';
 
 			if ( ! is_user_logged_in() ) {
@@ -112,6 +125,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			$output .= ' ';
 
 			$output .= Pronamic_IDeal_IDeal::htmlHiddenFields( array(
+				'pronamic_pay_s2member_index'             => $this->index,
 				'pronamic_pay_s2member_hash'              => $this->create_hash( $hash_data ),
 				'pronamic_pay_s2member_data[order_id]'    => $atts['order_id'],
 				'pronamic_pay_s2member_data[period]'      => $atts['period'],
@@ -139,10 +153,11 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 	 */
 	public function handle_payment() {
 		if ( filter_has_var( INPUT_POST, 'pronamic_pay_s2member' ) ) {
+			$index = filter_input( INPUT_POST, 'pronamic_pay_s2member_index', FILTER_SANITIZE_STRING );
 			$hash = filter_input( INPUT_POST, 'pronamic_pay_s2member_hash', FILTER_SANITIZE_STRING );
 			$data = filter_input( INPUT_POST, 'pronamic_pay_s2member_data', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 
-			if ( $this->create_hash( $data ) == $hash ) {
+			if ( $hash == $this->create_hash( $data ) ) {
 				// Config
 				$config_id = get_option( 'pronamic_pay_s2member_config_id' );
 
@@ -161,10 +176,46 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 					update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data->get_period() );
 					update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', $data->get_level() );
 
-					// Redirect
-					$gateway->redirect( $payment );
+					$error = $gateway->get_error();
+
+					if ( is_wp_error( $error ) ) {
+						// Set error message
+						$this->error[ $index ] = array( Pronamic_WP_Pay_Plugin::get_default_error_message() );
+
+						foreach ( $error->get_error_messages() as $message ) {
+							$this->error[ $index ][] = $message;
+						}
+					} else {
+						// Redirect
+						$gateway->redirect( $payment );
+					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Payment error for shortcode
+	 *
+	 * @param int $index Shortcode index
+	 * @return bool/string Default: false. Error string in case of payment error
+	 *
+	 * @since 1.1.0
+	 */
+	public function payment_error( $index = null ) {
+		if ( ! is_int( $index ) ) {
+			$index = $this->index;
+		}
+
+		if ( isset( $this->error[ $index ] ) ) {
+			return sprintf(
+				'<p><strong>%s</strong><br><em>%s: %s</em></p>',
+				$this->error[ $index ][0],
+				__( 'Error', 'pronamic_ideal' ),
+				$this->error[ $index ][1]
+			);
+		}
+
+		return false;
 	}
 }

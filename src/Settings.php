@@ -3,17 +3,25 @@
 /**
  * Title: s2Member settings
  * Description:
- * Copyright: Copyright (c) 2005 - 2014
+ * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
  * @author Leon Rowland
- * @since 1.2.6
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Settings {
+	/**
+	 * Constructs and initializes an s2Member settings object
+	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
+	//////////////////////////////////////////////////
+
+	/**
+	 * Admin intialize
+	 */
 	public function admin_init() {
 		// Settings - General
 		add_settings_section(
@@ -38,6 +46,11 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_config_id' );
 	}
 
+	//////////////////////////////////////////////////
+
+	/**
+	 * Admin menu
+	 */
 	public function admin_menu() {
 		$parent_slug = apply_filters( 'ws_plugin__s2member_during_add_admin_options_menu_slug', 'ws-plugin--s2member-start' );
 
@@ -64,10 +77,18 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 		);
 	}
 
+	//////////////////////////////////////////////////
+
+	/**
+	 * Page view options
+	 */
 	public function view_options_page() {
 		return Pronamic_WP_Pay_Admin::render_view( 's2member/settings' );
 	}
 
+	/**
+	 * Page button generator
+	 */
 	public function view_buttongen_page() {
 		return Pronamic_WP_Pay_Admin::render_view( 's2member/buttons-generator' );
 	}

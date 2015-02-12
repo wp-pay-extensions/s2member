@@ -3,10 +3,10 @@
 /**
  * Title: s2Member extension
  * Description:
- * Copyright: Copyright (c) 2005 - 2014
+ * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
  * @author Leon Rowland
- * @since 1.2.6
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 	/**

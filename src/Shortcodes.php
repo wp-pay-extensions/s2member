@@ -179,12 +179,12 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 
 					$error = $gateway->get_error();
 
-					if( is_wp_error( $error ) ) {
+					if ( is_wp_error( $error ) ) {
 						// Set error message
-						$this->error[$index] = array( Pronamic_WP_Pay_Plugin::get_default_error_message() );
+						$this->error[ $index ] = array( Pronamic_WP_Pay_Plugin::get_default_error_message() );
 
 						foreach ( $error->get_error_messages() as $message ) {
-							$this->error[$index][] = $message;
+							$this->error[ $index ][] = $message;
 						}
 					} else {
 						// Redirect
@@ -202,16 +202,16 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 	 * @return bool/string Default: false. Error string in case of payment error
 	 */
 	public function payment_error( $index = null ) {
-		if( !is_int( $index ) ) {
+		if ( ! is_int( $index ) ) {
 			$index = $this->index;
 		}
 
-		if( isset( $this->error[$index] ) ) {
+		if ( isset( $this->error[ $index ] ) ) {
 			return sprintf(
 				'<p><strong>%s</strong><br><em>%s: %s</em></p>',
-				$this->error[$index][0],
+				$this->error[ $index ][0],
 				__( 'Error', 'pronamic_ideal' ),
-				$this->error[$index][1]
+				$this->error[ $index ][1]
 			);
 		}
 

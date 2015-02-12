@@ -6,7 +6,7 @@
  * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
  * @author Leon Rowland
- * @since 1.2.6
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 	/**
@@ -199,6 +199,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 	 *
 	 * @param int $index Shortcode index
 	 * @return bool/string Default: false. Error string in case of payment error
+	 *
+	 * @since 1.1.0
 	 */
 	public function payment_error( $index = null ) {
 		if ( ! is_int( $index ) ) {

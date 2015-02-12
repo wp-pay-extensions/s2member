@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 /**
  * Title: s2Member
- * Description: 
+ * Description:
  * Copyright: Copyright (c) 2005 - 2014
  * Company: Pronamic
  * @author Remco Tolsma

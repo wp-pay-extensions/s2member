@@ -3,7 +3,7 @@
 /**
  * Title: s2Member settings
  * Description:
- * Copyright: Copyright (c) 2005 - 2014
+ * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
  * @author Leon Rowland
  * @since 1.2.6

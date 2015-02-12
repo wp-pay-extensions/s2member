@@ -1,12 +1,11 @@
 <?php
 
 /**
- * s2Member shortcodes
- *
- * Handles the generation and interpretation of
- * shortcodes for use in S2 Member
- *
- * @author Leon Rowland <leon@rowland.nl>
+ * Title: s2Member shortcodes
+ * Description:
+ * Copyright: Copyright (c) 2005 - 2015
+ * Company: Pronamic
+ * @author Leon Rowland
  * @since 1.2.6
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {

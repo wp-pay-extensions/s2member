@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fa5baa56c6f4ec329e13ca2077329e34",
+    "hash": "84b6f4bc9a432860850b20f1fd993384",
     "packages": [
         {
             "name": "composer/installers",
-            "version": "v1.0.20",
+            "version": "v1.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "1bff8aa77a18f3616f468ed8000cf86a5725bac3"
+                "reference": "d64e23fce42a4063d63262b19b8e7c0f3b5e4c45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/1bff8aa77a18f3616f468ed8000cf86a5725bac3",
-                "reference": "1bff8aa77a18f3616f468ed8000cf86a5725bac3",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d64e23fce42a4063d63262b19b8e7c0f3b5e4c45",
+                "reference": "d64e23fce42a4063d63262b19b8e7c0f3b5e4c45",
                 "shasum": ""
             },
             "replace": {
@@ -63,6 +63,7 @@
                 "Thelia",
                 "WolfCMS",
                 "agl",
+                "aimeos",
                 "annotatecms",
                 "bitrix",
                 "cakephp",
@@ -98,20 +99,20 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2015-01-11 03:51:11"
+            "time": "2015-02-18 17:17:01"
         },
         {
             "name": "wp-pay/core",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-pay/core.git",
-                "reference": "526115e9d2d07f5721a66c3e84b4289316e3596a"
+                "reference": "c4cf60d9bc8df35ca4d02d708cbca1ee5b74f5d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-pay/core/zipball/526115e9d2d07f5721a66c3e84b4289316e3596a",
-                "reference": "526115e9d2d07f5721a66c3e84b4289316e3596a",
+                "url": "https://api.github.com/repos/wp-pay/core/zipball/c4cf60d9bc8df35ca4d02d708cbca1ee5b74f5d5",
+                "reference": "c4cf60d9bc8df35ca4d02d708cbca1ee5b74f5d5",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +152,7 @@
                 "wordpress",
                 "wp"
             ],
-            "time": "2015-01-19 15:26:05"
+            "time": "2015-02-27 14:41:30"
         },
         {
             "name": "wpackagist-plugin/s2member",

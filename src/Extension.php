@@ -43,6 +43,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 		$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( array(
 			'level'  => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', true ),
 			'period' => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', true ),
+			'ccaps'  => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', true ),
 		) );
 
 		$email = $payment->get_email();
@@ -66,10 +67,11 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 		}
 
 		$level  = $data->get_level();
-		$period	= $data->get_period();
+		$period = $data->get_period();
+		$ccaps  = $data->get_ccaps();
 
 		$capability = 'access_s2member_level' . $level;
-		$role	   = 's2member_level' . $level;
+		$role       = 's2member_level' . $level;
 
 		// Update user role
 		//$user->add_cap( $capability ); // TODO Perhaps this should line be removed. At s2Member EOT this capability is not removed, which allows the user to illegitimately view the protected content.
@@ -83,6 +85,13 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 		);
 
 		$payment->add_note( $note );
+
+		// Custom Capabilities
+		if ( ! empty( $ccaps ) ) {
+			$ccaps = Pronamic_WP_Pay_Extensions_S2Member_Util::ccap_string_to_array( $ccaps );
+
+			Pronamic_WP_Pay_Extensions_S2Member_Util::ccap_user_update( $user, $ccaps );
+		}
 
 		// Registration times
 		$registration_time = time();

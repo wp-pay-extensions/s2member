@@ -32,6 +32,13 @@ Default: `'iDEAL s2Member Payment || {{order_id}}'`
 Type: `string`  
 Default: `'Pay'`  
 
+#### ccaps
+
+Custom Capabilities. Ex: `music,videos,free_gift` (*in comma-delimited format*).
+
+Type: `string`  
+Default: `''`  
+
 
 ## Links
 

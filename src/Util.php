@@ -27,7 +27,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Util {
 	 *
 	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
 	 */
-	public static function ccap_user_upate( WP_User $user, array $custom_capabilities ) {
+	public static function ccap_user_update( WP_User $user, array $custom_capabilities ) {
 		// Remove all custom capabilities
 		foreach ( $user->allcaps as $capability => $granted )
 			if ( 'access_s2member_ccap_' == substr( $capability, 0, 21 ) ) {

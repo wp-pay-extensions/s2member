@@ -2,6 +2,37 @@
 
 **s2Member driver for the WordPress payment processing library.**
 
+
+## Shortcode - [pronamic_ideal_s2member]
+
+### Attributes
+
+#### period
+
+Type: `string`  
+Default: `''`
+
+#### cost
+
+Type: `string`  
+Default: `''`
+
+#### level
+
+Type: `string`  
+Default: `''`
+
+#### description
+
+Type: `string`  
+Default: `'iDEAL s2Member Payment || {{order_id}}'`  
+
+#### button_text
+
+Type: `string`  
+Default: `'Pay'`  
+
+
 ## Links
 
 *	[s2Member](http://www.s2member.com/)

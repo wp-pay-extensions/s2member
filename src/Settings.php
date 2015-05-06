@@ -31,6 +31,9 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 			'pronamic_pay_s2member' // page
 		);
 
+		// Setting - Config ID
+		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_config_id' );
+
 		add_settings_field(
 			'pronamic_pay_s2member_config_id', // id
 			__( 'Configuration', 'pronamic_ideal' ), // title
@@ -43,7 +46,31 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 			)
 		);
 
-		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_config_id' );
+		// Setting - Signup e-mail message
+		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_signup_email_message' );
+
+		add_settings_field(
+			'pronamic_pay_s2member_signup_email_message', // id
+			__( 'Signup Confirmation Email Message', 'pronamic_ideal' ), // title
+			array( $this, 'wp_editor' ), // callback
+			'pronamic_pay_s2member', // page
+			'pronamic_pay_s2member_general', // section
+			array( // args
+				'name'      => 'pronamic_pay_s2member_signup_email_message',
+				'label_for' => 'pronamic_pay_s2member_signup_email_message',
+			)
+		);
+	}
+
+	//////////////////////////////////////////////////
+
+	/**
+	 * WordPress editor
+	 */
+	public function wp_editor( $args ) {
+		$content = get_option( $args['name'] );
+
+		wp_editor( $content, $args['name'] );
 	}
 
 	//////////////////////////////////////////////////

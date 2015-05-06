@@ -160,7 +160,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			$hash = filter_input( INPUT_POST, 'pronamic_pay_s2member_hash', FILTER_SANITIZE_STRING );
 			$data = filter_input( INPUT_POST, 'pronamic_pay_s2member_data', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 
-			if ( $hash == $this->create_hash( $data ) ) {
+			if ( $hash === $this->create_hash( $data ) ) {
 				// Config
 				$config_id = get_option( 'pronamic_pay_s2member_config_id' );
 

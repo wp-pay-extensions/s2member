@@ -29,8 +29,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_Util {
 	 */
 	public static function ccap_user_update( WP_User $user, array $custom_capabilities ) {
 		// Remove all custom capabilities
-		foreach ( $user->allcaps as $capability => $granted )
-			if ( 'access_s2member_ccap_' == substr( $capability, 0, 21 ) ) {
+		foreach ( $user->allcaps as $capability => $granted ) {
+			if ( 'access_s2member_ccap_' === substr( $capability, 0, 21 ) ) {
 				$user->remove_cap( $capability );
 			}
 		}

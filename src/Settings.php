@@ -100,7 +100,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 			__( 'iDEAL Buttons', 'pronamic_ideal' ),
 			'create_users',
 			'pronamic_pay_s2member_buttons',
-			array( $this, 'view_buttongen_page' )
+			array( $this, 'page_buttons_generator' )
 		);
 	}
 
@@ -109,14 +109,14 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 	/**
 	 * Page view options
 	 */
-	public function view_options_page() {
-		return Pronamic_WP_Pay_Admin::render_view( 's2member/settings' );
+	public function page_options() {
+		include dirname( __FILE__ ) . '/../views/html-admin-page-settings.php';
 	}
 
 	/**
 	 * Page button generator
 	 */
-	public function view_buttongen_page() {
-		return Pronamic_WP_Pay_Admin::render_view( 's2member/buttons-generator' );
+	public function page_buttons_generator() {
+		include dirname( __FILE__ ) . '/../views/html-admin-page-buttons-generator.php';
 	}
 }

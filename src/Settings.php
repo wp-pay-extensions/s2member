@@ -92,7 +92,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 			__( 'iDEAL Options', 'pronamic_ideal' ),
 			'create_users',
 			'pronamic_pay_s2member_settings',
-			array( $this, 'view_options_page' )
+			array( $this, 'page_options' )
 		);
 
 		add_submenu_page(

@@ -79,18 +79,4 @@ class Pronamic_WP_Pay_Extensions_S2Member_Order {
 
 		return $meta->umeta_id;
 	}
-
-	public static function getUserFromUID( $uid_key ) {
-		global $wpdb;
-
-		$table = _get_meta_table( 'user' );
-
-		$meta = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE umeta_id = %d", $uid_key ) );
-
-		if ( empty( $meta ) ) {
-			return false;
-		}
-
-		return $meta->user_id;
-	}
 }

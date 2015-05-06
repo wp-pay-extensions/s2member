@@ -5,8 +5,9 @@
  * Description:
  * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
- * @author Leon Rowland
+ * @author Remco Tolsma
  * @since 1.0.0
+ * @version 1.2.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 	/**

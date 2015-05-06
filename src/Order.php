@@ -41,42 +41,4 @@ class Pronamic_WP_Pay_Extensions_S2Member_Order {
 
 		self::$periods = apply_filters( 'pronamic_ideal_s2member_default_periods', $periods );
 	}
-
-	public function update_order( $order_data, $user_id ) {
-		update_user_option( $user_id, 'pronamic_ideal_s2member_order', $order_data );
-	}
-
-	public function add_order( $order_data, $user_id ) {
-		// Get user order
-		$existing_user_order = get_user_option( 'pronamic_ideal_s2member_order', $user_id );
-
-		// If the user has some order information, remove it
-		if ( $existing_user_order ) {
-			$this->remove_order( $user_id, 'pronamic_ideal_s2member_order' );
-		}
-
-		// Store meta information in db
-		update_user_option( $user_id, 'pronamic_ideal_s2member_order', $order_data );
-
-		// Find the user option meta id and use that as an order id.  return it!
-		return $this->find_user_option_uid( $user_id, 'pronamic_ideal_s2member_order' );
-	}
-
-	public function remove_order( $user_id ) {
-		delete_user_option( $user_id, 'pronamic_ideal_s2member_order' );
-	}
-
-	public function find_user_option_uid( $user_id, $meta_key ) {
-		global $wpdb;
-
-		$table = _get_meta_table( 'user' );
-
-		$meta = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table WHERE user_id = %d AND meta_key = %s", $user_id, $wpdb->prefix . $meta_key ) );
-
-		if ( empty( $meta ) ) {
-			return false;
-		}
-
-		return $meta->umeta_id;
-	}
 }

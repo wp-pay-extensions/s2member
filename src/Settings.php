@@ -5,8 +5,9 @@
  * Description:
  * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
- * @author Leon Rowland
+ * @author Remco Tolsma
  * @since 1.0.0
+ * @version 1.2.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 	/**
@@ -27,9 +28,12 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 		add_settings_section(
 			'pronamic_pay_s2member_general', // id
 			__( 'General', 'pronamic_ideal' ), // title
-			array( 'Pronamic_WP_Pay_Admin', 'settings_section' ), // callback
+			'__return_false', // callback
 			'pronamic_pay_s2member' // page
 		);
+
+		// Setting - Config ID
+		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_config_id' );
 
 		add_settings_field(
 			'pronamic_pay_s2member_config_id', // id
@@ -43,7 +47,31 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 			)
 		);
 
-		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_config_id' );
+		// Setting - Signup e-mail message
+		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_signup_email_message' );
+
+		add_settings_field(
+			'pronamic_pay_s2member_signup_email_message', // id
+			__( 'Signup Confirmation Email Message', 'pronamic_ideal' ), // title
+			array( $this, 'wp_editor' ), // callback
+			'pronamic_pay_s2member', // page
+			'pronamic_pay_s2member_general', // section
+			array( // args
+				'name'      => 'pronamic_pay_s2member_signup_email_message',
+				'label_for' => 'pronamic_pay_s2member_signup_email_message',
+			)
+		);
+	}
+
+	//////////////////////////////////////////////////
+
+	/**
+	 * WordPress editor
+	 */
+	public function wp_editor( $args ) {
+		$content = get_option( $args['name'] );
+
+		wp_editor( $content, $args['name'] );
 	}
 
 	//////////////////////////////////////////////////
@@ -64,7 +92,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 			__( 'iDEAL Options', 'pronamic_ideal' ),
 			'create_users',
 			'pronamic_pay_s2member_settings',
-			array( $this, 'view_options_page' )
+			array( $this, 'page_options' )
 		);
 
 		add_submenu_page(
@@ -73,7 +101,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 			__( 'iDEAL Buttons', 'pronamic_ideal' ),
 			'create_users',
 			'pronamic_pay_s2member_buttons',
-			array( $this, 'view_buttongen_page' )
+			array( $this, 'page_buttons_generator' )
 		);
 	}
 
@@ -82,14 +110,14 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 	/**
 	 * Page view options
 	 */
-	public function view_options_page() {
-		return Pronamic_WP_Pay_Admin::render_view( 's2member/settings' );
+	public function page_options() {
+		include dirname( __FILE__ ) . '/../views/html-admin-page-settings.php';
 	}
 
 	/**
 	 * Page button generator
 	 */
-	public function view_buttongen_page() {
-		return Pronamic_WP_Pay_Admin::render_view( 's2member/buttons-generator' );
+	public function page_buttons_generator() {
+		include dirname( __FILE__ ) . '/../views/html-admin-page-buttons-generator.php';
 	}
 }

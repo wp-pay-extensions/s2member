@@ -71,6 +71,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			'level'       => null,
 			'description' => __( 'iDEAL s2Member Payment || {{order_id}}', 'pronamic_ideal' ),
 			'button_text' => __( 'Pay', 'pronamic_ideal' ),
+			'ccaps'       => null,
 		);
 
 		// Combine the passed options
@@ -97,6 +98,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 				'cost'        => $atts['cost'],
 				'level'       => $atts['level'],
 				'description' => $atts['description'],
+				'ccaps'       => $atts['ccaps'],
 			);
 
 			// Output
@@ -132,6 +134,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 				'pronamic_pay_s2member_data[cost]'        => $atts['cost'],
 				'pronamic_pay_s2member_data[level]'       => $atts['level'],
 				'pronamic_pay_s2member_data[description]' => $atts['description'],
+				'pronamic_pay_s2member_data[ccaps]'       => $atts['ccaps'],
 			) );
 
 			$output .= sprintf(
@@ -157,7 +160,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			$hash = filter_input( INPUT_POST, 'pronamic_pay_s2member_hash', FILTER_SANITIZE_STRING );
 			$data = filter_input( INPUT_POST, 'pronamic_pay_s2member_data', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 
-			if ( $hash == $this->create_hash( $data ) ) {
+			if ( $hash === $this->create_hash( $data ) ) {
 				// Config
 				$config_id = get_option( 'pronamic_pay_s2member_config_id' );
 
@@ -175,6 +178,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 
 					update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data->get_period() );
 					update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', $data->get_level() );
+					update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', $data->get_ccaps() );
 
 					$error = $gateway->get_error();
 

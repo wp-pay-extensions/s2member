@@ -36,6 +36,10 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		return $this->data['level'];
 	}
 
+	public function get_ccaps() {
+		return $this->data['ccaps'];
+	}
+
 	//////////////////////////////////////////////////
 
 	public function get_order_id() {

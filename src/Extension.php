@@ -5,8 +5,9 @@
  * Description:
  * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
- * @author Leon Rowland
+ * @author Remco Tolsma
  * @since 1.0.0
+ * @version 1.2.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 	/**
@@ -24,7 +25,6 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 	public static function plugins_loaded() {
 		if ( Pronamic_WP_Pay_Extensions_S2Member_S2Member::is_active() ) {
 			// Bridge Classes
-			new Pronamic_WP_Pay_Extensions_S2Member_Order();
 			new Pronamic_WP_Pay_Extensions_S2Member_Settings();
 			new Pronamic_WP_Pay_Extensions_S2Member_Shortcodes();
 
@@ -34,7 +34,31 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 
 			add_action( "pronamic_payment_status_update_$slug", array( __CLASS__, 'status_update' ), 10, 2 );
 			add_filter( "pronamic_payment_source_text_$slug",   array( __CLASS__, 'source_text' ), 10, 2 );
+
+			add_filter( 'default_option_' . 'pronamic_pay_s2member_signup_email_message', array( __CLASS__, 'default_option_s2member_signup_email_message' ) );
 		}
+	}
+
+	//////////////////////////////////////////////////
+
+	/**
+	 * Default option s2Member signup email message
+	 */
+	public static function default_option_s2member_signup_email_message( $default ) {
+		$default = sprintf( __( 'Thanks %s! Your membership has been approved.
+
+Your password is %s. Please change your password when you login.
+
+If you have any trouble, please feel free to contact us.
+
+Best Regards,
+%s', 'pronamic_ideal' ),
+			'%%email%%',
+			'%%password%%',
+			get_bloginfo( 'name' )
+		);
+
+		return $default;
 	}
 
 	//////////////////////////////////////////////////
@@ -43,6 +67,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 		$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( array(
 			'level'  => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', true ),
 			'period' => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', true ),
+			'ccaps'  => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', true ),
 		) );
 
 		$email = $payment->get_email();
@@ -58,18 +83,36 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 			// Make a user with the username as the email
 			$user_id = wp_create_user( $email, $random_string, $email );
 
+			// Subject
 			$subject = __( 'Account Confirmation', 'pronamic_ideal' ) . ' | ' . get_bloginfo( 'name' );
-			$message = sprintf( __( 'Your password is %s . Please change your password when you login', 'pronamic_ideal' ), $random_string );
+
+			// Message
+			$message = get_option( 'pronamic_pay_s2member_signup_email_message' );
+
+			$message = str_replace(
+				array(
+					'%%email%%',
+					'%%password%%',
+				),
+				array(
+					$email,
+					$password,
+				),
+				$message
+			);
+
+			// Mail
 			wp_mail( $email, $subject, $message );
 
 			$user = new WP_User( $user_id );
 		}
 
 		$level  = $data->get_level();
-		$period	= $data->get_period();
+		$period = $data->get_period();
+		$ccaps  = $data->get_ccaps();
 
 		$capability = 'access_s2member_level' . $level;
-		$role	   = 's2member_level' . $level;
+		$role       = 's2member_level' . $level;
 
 		// Update user role
 		//$user->add_cap( $capability ); // TODO Perhaps this should line be removed. At s2Member EOT this capability is not removed, which allows the user to illegitimately view the protected content.
@@ -83,6 +126,13 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 		);
 
 		$payment->add_note( $note );
+
+		// Custom Capabilities
+		if ( ! empty( $ccaps ) ) {
+			$ccaps = Pronamic_WP_Pay_Extensions_S2Member_Util::ccap_string_to_array( $ccaps );
+
+			Pronamic_WP_Pay_Extensions_S2Member_Util::ccap_user_update( $user, $ccaps );
+		}
 
 		// Registration times
 		$registration_time = time();

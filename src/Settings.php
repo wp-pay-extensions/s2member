@@ -27,7 +27,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 		add_settings_section(
 			'pronamic_pay_s2member_general', // id
 			__( 'General', 'pronamic_ideal' ), // title
-			array( 'Pronamic_WP_Pay_Admin', 'settings_section' ), // callback
+			'__return_false', // callback
 			'pronamic_pay_s2member' // page
 		);
 

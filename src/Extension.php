@@ -45,14 +45,14 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 	 * Default option s2Member signup email message
 	 */
 	public static function default_option_s2member_signup_email_message( $default ) {
-		$default = sprintf( __( "Thanks %s! Your membership has been approved.
+		$default = sprintf( __( 'Thanks %s! Your membership has been approved.
 
 Your password is %s. Please change your password when you login.
 
 If you have any trouble, please feel free to contact us.
 
 Best Regards,
-%s", 'pronamic_ideal' ),
+%s', 'pronamic_ideal' ),
 			'%%email%%',
 			'%%password%%',
 			get_bloginfo( 'name' )

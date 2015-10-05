@@ -52,10 +52,10 @@ class Pronamic_WP_Pay_Extensions_S2Member_S2Member {
 			'5 M' => sprintf( $label, __( '5 month', 'pronamic_ideal' ) ),
 			'6 M' => sprintf( $label, __( '6 month', 'pronamic_ideal' ) ),
 			'1 Y' => sprintf( $label, __( '1 year', 'pronamic_ideal' ) ),
-			'2 Y' => sprintf( $label, __( '1 year', 'pronamic_ideal' ) ),
-			'3 Y' => sprintf( $label, __( '1 year', 'pronamic_ideal' ) ),
-			'4 Y' => sprintf( $label, __( '1 year', 'pronamic_ideal' ) ),
-			'5 Y' => sprintf( $label, __( '1 year', 'pronamic_ideal' ) ),
+			'2 Y' => sprintf( $label, __( '2 years', 'pronamic_ideal' ) ),
+			'3 Y' => sprintf( $label, __( '3 years', 'pronamic_ideal' ) ),
+			'4 Y' => sprintf( $label, __( '4 years', 'pronamic_ideal' ) ),
+			'5 Y' => sprintf( $label, __( '5 years', 'pronamic_ideal' ) ),
 			'1 L' => sprintf( $label, __( 'lifetime', 'pronamic_ideal' ) ),
 		);
 

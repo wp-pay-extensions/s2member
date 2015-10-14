@@ -1,15 +1,31 @@
-# Changelog
+# Change Log
 
-## 1.2.0
-*	Added experimental support for `ccaps` in shortcode.
-*	Added settings field for the signup confirmation email message.
-*	Added HTML admin views from the Pronamic iDEAL plugin.
+All notable changes to this project will be documented in this file.
 
-## 1.1.1
-*	Changed WordPress pay core library requirment from ~1.0.0 to >=1.0.0.
+This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## 1.1.0
-*	Show errors if they occur.
+## [Unreleased][unreleased]
+- 
 
-## 1.0.0
-*	First release.
+## [1.2.1] - 2015-10-14
+- Fix incorrect period naming.
+
+## [1.2.0] - 2015-05-06
+- Added experimental support for `ccaps` in shortcode.
+- Added settings field for the signup confirmation email message.
+- Added HTML admin views from the Pronamic iDEAL plugin.
+
+## [1.1.1] - 2015-03-03
+- Changed WordPress pay core library requirment from ~1.0.0 to >=1.0.0.
+
+## [1.1.0] - 2015-02-12
+- Show errors if they occur.
+
+## 1.0.0 - 2015-01-20
+- First release.
+
+[unreleased]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.1...HEAD
+[1.2.1]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.0...1.2.1
+[1.2.0]: https://github.com/wp-pay-extensions/gravityforms/compare/1.1.1...1.2.0
+[1.1.1]: https://github.com/wp-pay-extensions/gravityforms/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/wp-pay-extensions/gravityforms/compare/1.0.0...1.1.0

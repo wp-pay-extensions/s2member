@@ -35,7 +35,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 			add_action( "pronamic_payment_status_update_$slug", array( __CLASS__, 'status_update' ), 10, 2 );
 			add_filter( "pronamic_payment_source_text_$slug",   array( __CLASS__, 'source_text' ), 10, 2 );
 
-			add_filter( 'default_option_' . 'pronamic_pay_s2member_signup_email_message', array( __CLASS__, 'default_option_s2member_signup_email_message' ) );
+			$option_name = 'pronamic_pay_s2member_signup_email_message';
+			add_filter( 'default_option_' . $option_name , array( __CLASS__, 'default_option_s2member_signup_email_message' ) );
 		}
 	}
 

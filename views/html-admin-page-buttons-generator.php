@@ -42,7 +42,7 @@
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th><?php _e( 'Generator', 'pronamic_ideal' ); ?></th>
+					<th><?php esc_html_e( 'Generator', 'pronamic_ideal' ); ?></th>
 					<td>
 						<p>
 							<?php
@@ -56,7 +56,7 @@
 							}
 							$select .= '</select>';
 
-							printf( __( 'I want to charge: %s / %s', 'pronamic_ideal' ), $input, $select );
+							printf( __( 'I want to charge: %s / %s', 'pronamic_ideal' ), $input, $select ); // WPCS: xss OK
 
 							?>
 						</p>
@@ -66,30 +66,30 @@
 							$select  = '';
 							$select .= '<select class="jPronamicIdealLevelShortcode">';
 							for ( $level = 1; $level <= 4; $level++ ) {
-								$select .= sprintf( '<option value="%s">%s</option>', $level, $level );
+								$select .= sprintf( '<option value="%s">%s</option>', esc_attr( $level ), esc_html( $level ) );
 							}
 							$select .= '</select>';
 
-							printf( __( 'for access to level %s content', 'pronamic_ideal' ), $select );
+							printf( __( 'for access to level %s content', 'pronamic_ideal' ), $select ); // WPCS: xss OK
 
 							?>
 						</p>
 						<p>
-							<?php _e( 'Description:', 'pronamic_ideal' ); ?>
+							<?php esc_html_e( 'Description:', 'pronamic_ideal' ); ?>
 							<input type='text' size='70' class='jPronamicIdealDescriptionShortcode'/>
 						</p>
 						<p>
-							<?php _e( 'Button text:', 'pronamic_ideal' ); ?>
+							<?php esc_html_e( 'Button text:', 'pronamic_ideal' ); ?>
 							<input type='text' size='50' class='jPronamicIdealButtonTextShortcode'/>
-							<?php printf( __( 'Default: <code>%s</code>.', 'pronamic_ideal' ), __( 'Pay', 'pronamic_ideal' ) ); ?>
+							<?php printf( __( 'Default: <code>%s</code>.', 'pronamic_ideal' ), __( 'Pay', 'pronamic_ideal' ) ); // WPCS: xss OK ?>
 						</p>
 						<p>
-							<a class="button-primary jPronamicIdealGenerateShortcode"><?php _e( 'Generate Shortcode', 'pronamic_ideal' ); ?></a>
+							<a class="button-primary jPronamicIdealGenerateShortcode"><?php esc_html_e( 'Generate Shortcode', 'pronamic_ideal' ); ?></a>
 						</p>
 					</td>
 				</tr>
 				<tr>
-					<th><?php _e( 'Shortcode', 'pronamic_ideal' ); ?></th>
+					<th><?php esc_html_e( 'Shortcode', 'pronamic_ideal' ); ?></th>
 					<td>
 						<textarea class="jPronamicIdealButtonShortcodeOutput" style="width: 100%; min-height: 30px;"></textarea>
 					</td>

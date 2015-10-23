@@ -197,7 +197,7 @@ Best Regards,
 		}
 
 		if ( $url && $can_redirect ) {
-			wp_redirect( $url, 303 );
+			wp_redirect( $url );
 
 			exit;
 		}

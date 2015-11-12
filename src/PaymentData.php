@@ -24,6 +24,16 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		$this->data = $data;
 	}
 
+	public function get_payment_method() {
+		$payment_method = null;
+
+		if ( isset( $this->data['payment_method'] ) ) {
+			$payment_method = $this->data['payment_method'];
+		}
+
+		return $payment_method;
+	}
+
 	//////////////////////////////////////////////////
 	// s2Member specific data
 	//////////////////////////////////////////////////

@@ -97,7 +97,7 @@ Best Regards,
 				),
 				array(
 					$email,
-					$password,
+					$random_string,
 				),
 				$message
 			);

@@ -87,7 +87,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	}
 
 	public function get_source_id() {
-		return $this->data['orderID'];
+		return $this->data['order_id'];
 	}
 
 	//////////////////////////////////////////////////

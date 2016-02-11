@@ -3,11 +3,12 @@
 /**
  * Title: s2Member extension
  * Description:
- * Copyright: Copyright (c) 2005 - 2015
+ * Copyright: Copyright (c) 2005 - 2016
  * Company: Pronamic
+ *
  * @author Remco Tolsma
+ * @version 1.2.2
  * @since 1.0.0
- * @version 1.2.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 	/**
@@ -97,7 +98,7 @@ Best Regards,
 				),
 				array(
 					$email,
-					$password,
+					$random_string,
 				),
 				$message
 			);
@@ -147,7 +148,7 @@ Best Regards,
 
 		update_user_option( $user->ID, 's2member_paid_registration_times', $registration_times );
 
-		if ( in_array( $period, array( '1 L' ) ) ) {
+		if ( in_array( $period, array( '1 L' ), true ) ) {
 			// Lifetime, delete end of time option
 			delete_user_option( $user->ID, 's2member_auto_eot_time' );
 		} else {
@@ -197,7 +198,7 @@ Best Regards,
 		}
 
 		if ( $url && $can_redirect ) {
-			wp_redirect( $url, 303 );
+			wp_redirect( $url );
 
 			exit;
 		}

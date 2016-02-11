@@ -3,9 +3,11 @@
 /**
  * Title: s2Member payment data
  * Description:
- * Copyright: Copyright (c) 2005 - 2015
+ * Copyright: Copyright (c) 2005 - 2016
  * Company: Pronamic
- * @author Leon Rowland
+ *
+ * @author Remco Tolsma
+ * @version 1.2.2
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_PaymentData {
@@ -22,6 +24,16 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		parent::__construct();
 
 		$this->data = $data;
+	}
+
+	public function get_payment_method() {
+		$payment_method = null;
+
+		if ( isset( $this->data['payment_method'] ) ) {
+			$payment_method = $this->data['payment_method'];
+		}
+
+		return $payment_method;
 	}
 
 	//////////////////////////////////////////////////
@@ -77,7 +89,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	}
 
 	public function get_source_id() {
-		return $this->data['orderID'];
+		return $this->data['order_id'];
 	}
 
 	//////////////////////////////////////////////////

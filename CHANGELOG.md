@@ -7,6 +7,12 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 - 
 
+## [1.2.2] - 2016-02-11
+- Fixed 'Notice: Undefined index: orderID'
+- Fixed password not included in registration confirmation.
+- Added support for payment method in shortcode.
+- Removed status code from redirect in status_update.
+
 ## [1.2.1] - 2015-10-14
 - Fix incorrect period naming.
 

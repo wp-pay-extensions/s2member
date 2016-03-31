@@ -120,19 +120,19 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		return $email;
 	}
 
-	public function getCustomerName() {
-		return parent::getCustomerName();
+	public function get_customer_name() {
+		return parent::get_customer_name();
 	}
 
-	public function getOwnerAddress() {
+	public function get_address() {
 		return '';
 	}
 
-	public function getOwnerCity() {
+	public function get_city() {
 		return '';
 	}
 
-	public function getOwnerZip() {
+	public function get_zip() {
 		return '';
 	}
 }

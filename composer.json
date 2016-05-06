@@ -26,15 +26,8 @@
 	"autoload": {
 		"classmap": ["src/"]
 	},
-	"repositories":[
-		{
-			"type": "composer",
-			"url": "https://wpackagist.org/"
-		}
-	],
 	"require": {
 		"php": ">=5.2.4",
-		"wpackagist-plugin/s2member": "141007",
 		"wp-pay/core": ">=1.0.0"
 	},
 	"require-dev": {

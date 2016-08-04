@@ -9,28 +9,37 @@
 					level = jQuery( '.jPronamicIdealLevelShortcode' ),
 					description = jQuery( '.jPronamicIdealDescriptionShortcode' ),
 					button_text = jQuery( '.jPronamicIdealButtonTextShortcode' ),
+					payment_method = jQuery( '.jPronamicIdealPaymentMethodShortcode' ),
 					generate_button = jQuery( '.jPronamicIdealGenerateShortcode' ),
 					output = jQuery( '.jPronamicIdealButtonShortcodeOutput' );
 
-				generate_button.click( function() {
+				jQuery( '.pronamic_ideal_shortcode_generator' ).on( 'keyup change', 'input, select', function() {
 					var shortcode = '';
 
-					shortcode += '[pronamic_ideal_s2member ';
+					shortcode += '[pronamic_ideal_s2member';
 
 					if ( cost.val().length > 0 )
-						shortcode += 'cost="' + cost.val() + '" ';
+						shortcode += ' cost="' + cost.val() + '"';
 
-					if ( period.val().length > 0 )
-						shortcode += 'period="' + period.val() + '" ';
+					if ( period.val().length > 0 ) {
+						if ( 'R' === period.val().substr( 0, 1 ) ) {
+							shortcode += ' period="' + period.val().substr( 1 ) + '" recurring="Y"';
+						} else {
+							shortcode += ' period="' + period.val() + '"';
+						}
+					}
 
 					if ( level.val().length > 0 )
-						shortcode += 'level="' + level.val() + '" ';
+						shortcode += ' level="' + level.val() + '"';
 
 					if ( description.val().length > 0 )
-						shortcode += 'description="' + description.val() + ' {{order_id}}" ';
+						shortcode += ' description="' + description.val() + ' {{order_id}}"';
 
 					if ( button_text.val().length > 0 )
-						shortcode += 'button_text="' + button_text.val() + '" ';
+						shortcode += ' button_text="' + button_text.val() + '"';
+
+					if ( payment_method.val().length > 0 )
+						shortcode += ' payment_method="' + payment_method.val() + '"';
 
 					shortcode += ']';
 
@@ -51,16 +60,35 @@
 
 							$select  = '';
 							$select .= '<select class="jPronamicIdealPeriodShortcode">';
+							$prev_recurring = null;
+
 							foreach ( Pronamic_WP_Pay_Extensions_S2Member_S2Member::get_periods() as $key => $period ) {
+								$is_recurring = ( 'R' === substr( $key, 0, 1 ) );
+
+								if ( $is_recurring !== $prev_recurring ) {
+									if ( null !== $prev_recurring ) {
+										$select .= '</optgroup>';
+									}
+
+									$label = __( 'Single payment', 'pronamic_ideal' );
+
+									if ( $is_recurring ) {
+										$label = __( 'Recurring payment', 'pronamic_ideal' );
+									}
+
+									$select .= sprintf( '<optgroup label="%s">', $label );
+								}
+
 								$select .= sprintf( '<option value="%s">%s</option>', $key, $period );
+
+								$prev_recurring = $is_recurring;
 							}
+							$select .= '</optgroup>';
 							$select .= '</select>';
 
-							printf( __( 'I want to charge: %s / %s', 'pronamic_ideal' ), $input, $select ); // WPCS: xss OK
+							printf( __( 'I want to charge %s for %s', 'pronamic_ideal' ), $input, $select ); // WPCS: xss OK
 
 							?>
-						</p>
-						<p>
 							<?php
 
 							$select  = '';
@@ -70,21 +98,38 @@
 							}
 							$select .= '</select>';
 
-							printf( __( 'for access to level %s content', 'pronamic_ideal' ), $select ); // WPCS: xss OK
+							printf( __( 'access to level %s content.', 'pronamic_ideal' ), $select ); // WPCS: xss OK
 
 							?>
 						</p>
 						<p>
 							<?php esc_html_e( 'Description:', 'pronamic_ideal' ); ?>
-							<input type='text' size='70' class='jPronamicIdealDescriptionShortcode'/>
+							<input type="text" size="70" class="jPronamicIdealDescriptionShortcode" />
 						</p>
 						<p>
 							<?php esc_html_e( 'Button text:', 'pronamic_ideal' ); ?>
-							<input type='text' size='50' class='jPronamicIdealButtonTextShortcode'/>
+							<input type="text" size="50" class="jPronamicIdealButtonTextShortcode" />
 							<?php printf( __( 'Default: <code>%s</code>.', 'pronamic_ideal' ), __( 'Pay', 'pronamic_ideal' ) ); // WPCS: xss OK ?>
 						</p>
 						<p>
-							<a class="button-primary jPronamicIdealGenerateShortcode"><?php esc_html_e( 'Generate Shortcode', 'pronamic_ideal' ); ?></a>
+							<?php esc_html_e( 'Payment Method', 'pronamic_ideal' ); ?>:
+							<select class="jPronamicIdealPaymentMethodShortcode">
+								<option value=""><?php echo esc_html_x( 'All available methods', 'Payment method field', 'pronamic_ideal' ); ?></option>
+								<?php
+
+								$methods = Pronamic_WP_Pay_PaymentMethods::get_payment_methods();
+
+								foreach ( $methods as $method => $name ) {
+									printf(
+										'<option value="%s">%s</option>',
+										esc_attr( $method ),
+										esc_html( $name )
+									);
+								}
+
+								?>
+							</select>
+
 						</p>
 					</td>
 				</tr>

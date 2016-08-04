@@ -24,16 +24,20 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		parent::__construct();
 
 		$this->data = $data;
+		$this->recurring = false;
+		$this->subscription = false;
+
+		if ( ! empty( $data['subscription_id'] ) ) {
+			$this->subscription = new Pronamic_WP_Pay_Subscription( $data['subscription_id'] );
+
+			if ( $this->subscription ) {
+				$this->recurring = true;
+			}
+		}
 	}
 
 	public function get_payment_method() {
-		$payment_method = null;
-
-		if ( isset( $this->data['payment_method'] ) ) {
-			$payment_method = $this->data['payment_method'];
-		}
-
-		return $payment_method;
+		return $this->data['payment_method'];
 	}
 
 	//////////////////////////////////////////////////
@@ -89,6 +93,12 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	}
 
 	public function get_source_id() {
+		if ( $this->recurring && $this->subscription ) {
+			$first = $this->subscription->get_first_payment();
+
+			return $first->get_source_id();
+		}
+
 		return $this->data['order_id'];
 	}
 
@@ -134,5 +144,62 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 
 	public function get_zip() {
 		return '';
+	}
+
+	//////////////////////////////////////////////////
+	// Subscription
+	//////////////////////////////////////////////////
+
+	/**
+	 * Get subscription.
+	 *
+	 * @return string|bool
+	 */
+	public function get_subscription() {
+		$period = $this->get_period();
+
+		if ( 'Y' !== $this->data['recurring'] ) {
+			return false;
+		}
+
+		if ( $this->subscription ) {
+			return $this->subscription;
+		}
+
+		// Interval
+		list( $interval, $interval_period ) = explode( ' ', $period );
+
+		switch( $interval_period ) {
+			case 'D' :
+				$interval_period = 'day';
+
+				break;
+			case 'W' :
+				$interval_period = 'week';
+
+				break;
+			case 'M' :
+				$interval_period = 'month';
+
+				break;
+			case 'Y' :
+				$interval_period = 'year';
+
+				break;
+		}
+
+		$subscription                  = new Pronamic_Pay_Subscription();
+		//$subscription->frequency       = 5;
+		$subscription->interval        = $interval;
+		$subscription->interval_period = $interval_period;
+		$subscription->amount          = $this->get_amount();
+		$subscription->currency        = $this->get_currency();
+		$subscription->description     = $this->get_description();
+
+		return $subscription;
+	}
+
+	public function get_subscription_id() {
+		return intval( $this->data['subscription_id'] );
 	}
 }

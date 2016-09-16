@@ -169,25 +169,6 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		// Interval
 		list( $interval, $interval_period ) = explode( ' ', $period );
 
-		switch( $interval_period ) {
-			case 'D' :
-				$interval_period = 'day';
-
-				break;
-			case 'W' :
-				$interval_period = 'week';
-
-				break;
-			case 'M' :
-				$interval_period = 'month';
-
-				break;
-			case 'Y' :
-				$interval_period = 'year';
-
-				break;
-		}
-
 		$subscription                  = new Pronamic_Pay_Subscription();
 		//$subscription->frequency       = 5;
 		$subscription->interval        = $interval;

@@ -68,15 +68,13 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 		$this->index++;
 
 		$defaults = array(
-			'period'          => null,
-			'cost'            => null,
-			'level'           => null,
-			'description'     => __( 'iDEAL s2Member Payment || {{order_id}}', 'pronamic_ideal' ),
-			'button_text'     => __( 'Pay', 'pronamic_ideal' ),
-			'ccaps'           => null,
-			'payment_method'  => null,
-			'recurring'       => null,
-			'subscription_id' => null,
+			'period'         => null,
+			'cost'           => null,
+			'level'          => null,
+			'description'    => __( 'iDEAL s2Member Payment || {{order_id}}', 'pronamic_ideal' ),
+			'button_text'    => __( 'Pay', 'pronamic_ideal' ),
+			'ccaps'          => null,
+			'payment_method' => null,
 		);
 
 		// Combine the passed options
@@ -108,15 +106,13 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 
 			// Hash
 			$hash_data = array(
-				'order_id'        => $atts[ 'order_id' ],
-				'period'          => $atts[ 'period' ],
-				'cost'            => $atts[ 'cost' ],
-				'level'           => $atts[ 'level' ],
-				'description'     => $atts[ 'description' ],
-				'ccaps'           => $atts[ 'ccaps' ],
-				'payment_method'  => $atts[ 'payment_method' ],
-				'recurring'       => $atts[ 'recurring' ],
-				'subscription_id' => $atts[ 'subscription_id' ],
+				'order_id'       => $atts['order_id'],
+				'period'         => $atts['period'],
+				'cost'           => $atts['cost'],
+				'level'          => $atts['level'],
+				'description'    => $atts['description'],
+				'ccaps'          => $atts['ccaps'],
+				'payment_method' => $atts['payment_method'],
 			);
 
 			// Output
@@ -145,17 +141,15 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 			$output .= ' ';
 
 			$output .= Pronamic_IDeal_IDeal::htmlHiddenFields( array(
-				'pronamic_pay_s2member_index'                 => $this->index,
-				'pronamic_pay_s2member_hash'                  => $this->create_hash( $hash_data ),
-				'pronamic_pay_s2member_data[order_id]'        => $atts[ 'order_id' ],
-				'pronamic_pay_s2member_data[period]'          => $atts[ 'period' ],
-				'pronamic_pay_s2member_data[cost]'            => $atts[ 'cost' ],
-				'pronamic_pay_s2member_data[level]'           => $atts[ 'level' ],
-				'pronamic_pay_s2member_data[description]'     => $atts[ 'description' ],
-				'pronamic_pay_s2member_data[ccaps]'           => $atts[ 'ccaps' ],
-				'pronamic_pay_s2member_data[payment_method]'  => $atts[ 'payment_method' ],
-				'pronamic_pay_s2member_data[recurring]'       => $atts[ 'recurring' ],
-				'pronamic_pay_s2member_data[subscription_id]' => $atts[ 'subscription_id' ],
+				'pronamic_pay_s2member_index'                => $this->index,
+				'pronamic_pay_s2member_hash'                 => $this->create_hash( $hash_data ),
+				'pronamic_pay_s2member_data[order_id]'       => $atts['order_id'],
+				'pronamic_pay_s2member_data[period]'         => $atts['period'],
+				'pronamic_pay_s2member_data[cost]'           => $atts['cost'],
+				'pronamic_pay_s2member_data[level]'          => $atts['level'],
+				'pronamic_pay_s2member_data[description]'    => $atts['description'],
+				'pronamic_pay_s2member_data[ccaps]'          => $atts['ccaps'],
+				'pronamic_pay_s2member_data[payment_method]' => $atts['payment_method'],
 			) );
 
 			$output .= sprintf(

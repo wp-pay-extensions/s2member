@@ -33,8 +33,9 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 
 			add_action( "pronamic_payment_status_update_{$slug}_unknown_to_success", array( __CLASS__, 'update_status_unknown_to_success' ), 10, 2 );
 
-			add_action( "pronamic_payment_status_update_$slug", array( __CLASS__, 'status_update' ), 10, 2 );
-			add_filter( "pronamic_payment_source_text_$slug",   array( __CLASS__, 'source_text' ), 10, 2 );
+			add_action( 'pronamic_payment_status_update_' . $slug, array( __CLASS__, 'status_update' ), 10, 2 );
+			add_filter( 'pronamic_payment_source_text_' . $slug,   array( __CLASS__, 'source_text' ), 10, 2 );
+			add_filter( 'pronamic_payment_source_description_' . $slug,   array( __CLASS__, 'source_description' ), 10, 2 );
 
 			$option_name = 'pronamic_pay_s2member_signup_email_message';
 			add_filter( 'default_option_' . $option_name , array( __CLASS__, 'default_option_s2member_signup_email_message' ) );
@@ -215,5 +216,14 @@ Best Regards,
 		$text .= __( 's2Member', 'pronamic_ideal' );
 
 		return $text;
+	}
+
+	/**
+	 * Source description.
+	 */
+	public function source_description( $description, Pronamic_Pay_Payment $payment ) {
+		$description = __( 's2Member', 'pronamic_ideal' );
+
+		return $description;
 	}
 }

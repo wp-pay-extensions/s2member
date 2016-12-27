@@ -221,7 +221,7 @@ Best Regards,
 	/**
 	 * Source description.
 	 */
-	public function source_description( $description, Pronamic_Pay_Payment $payment ) {
+	public static function source_description( $description, Pronamic_Pay_Payment $payment ) {
 		$description = __( 's2Member', 'pronamic_ideal' );
 
 		return $description;

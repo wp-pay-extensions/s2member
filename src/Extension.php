@@ -12,6 +12,15 @@
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 	/**
+	 * Slug
+	 *
+	 * @var string
+	 */
+	const SLUG = 's2member';
+
+	//////////////////////////////////////////////////
+
+	/**
 	 * Bootstrap
 	 */
 	public static function bootstrap() {
@@ -32,6 +41,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 			$slug = 's2member';
 
 			add_action( "pronamic_payment_status_update_{$slug}_unknown_to_success", array( __CLASS__, 'update_status_unknown_to_success' ), 10, 2 );
+			add_action( 'pronamic_subscription_renewal_notice_' . self::SLUG, array( __CLASS__, 'subscription_renewal_notice' ) );
 
 			add_action( 'pronamic_payment_status_update_' . $slug, array( __CLASS__, 'status_update' ), 10, 2 );
 			add_filter( 'pronamic_payment_source_text_' . $slug,   array( __CLASS__, 'source_text' ), 10, 2 );
@@ -39,6 +49,12 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 
 			$option_name = 'pronamic_pay_s2member_signup_email_message';
 			add_filter( 'default_option_' . $option_name , array( __CLASS__, 'default_option_s2member_signup_email_message' ) );
+
+			$option_name = 'pronamic_pay_s2member_subscription_renewal_notice_email_subject';
+			add_filter( 'default_option_' . $option_name , array( __CLASS__, 'default_option_s2member_subscription_renewal_notice_email_subject' ) );
+
+			$option_name = 'pronamic_pay_s2member_subscription_renewal_notice_email_message';
+			add_filter( 'default_option_' . $option_name , array( __CLASS__, 'default_option_s2member_subscription_renewal_notice_email_message' ) );
 		}
 	}
 
@@ -66,17 +82,52 @@ Best Regards,
 
 	//////////////////////////////////////////////////
 
+	/**
+	 * Default option s2Member subscription renewal notice email subject.
+	 */
+	public static function default_option_s2member_subscription_renewal_notice_email_subject( $default ) {
+		$default = __( 'Subscription Renewal Notice', 'pronamic_ideal' ) . ' | ' . get_bloginfo( 'name' );
+
+		return $default;
+	}
+
+	/**
+	 * Default option s2Member subscription renewal notice email message.
+	 */
+	public static function default_option_s2member_subscription_renewal_notice_email_message( $default ) {
+		$default = sprintf( __( 'Dear %s,
+
+Your membership is due for renewal on %s.
+
+To cancel your subscription, visit %s
+
+Best Regards,
+%s', 'pronamic_ideal' ),
+			'%%email%%',
+			'%%subscription_renewal_date%%',
+			'%%subscription_cancel_url%%',
+			get_bloginfo( 'name' )
+		);
+
+		return $default;
+	}
+
+	//////////////////////////////////////////////////
+
 	public static function update_status_unknown_to_success( Pronamic_Pay_Payment $payment, $can_redirect = false ) {
-		$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( array(
-			'level'  => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', true ),
-			'period' => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', true ),
-			'ccaps'  => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', true ),
-		) );
+		$payment_data = Pronamic_WP_Pay_Extensions_S2Member_Util::get_payment_data( $payment );
+
+		$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( $payment_data );
 
 		$email = $payment->get_email();
 
 		// get account from email
 		$user = get_user_by( 'email', $email );
+
+		if ( ! $user && $payment->get_recurring() ) {
+			// Invalid user for recurring payment, abort to prevent account creation.
+			return;
+		}
 
 		// No valid user?
 		if ( ! $user ) {
@@ -108,7 +159,21 @@ Best Regards,
 			wp_mail( $email, $subject, $message );
 
 			$user = new WP_User( $user_id );
+
+			// Update subscription post author
+			if ( $payment->get_subscription_id() ) {
+				$arg = array(
+					'ID'          => $payment->get_subscription_id(),
+					'post_author' => $user->ID,
+				);
+
+				wp_update_post( $arg );
+			}
 		}
+
+		// Set s2Member subscription ID.
+		update_user_option( $user->ID, 's2member_subscr_gateway', $payment->get_method() );
+		update_user_option( $user->ID, 's2member_subscr_id', $payment->get_subscription_id() );
 
 		$level  = $data->get_level();
 		$period = $data->get_period();
@@ -161,31 +226,50 @@ Best Regards,
 				$eot_time_current = time();
 			}
 
-			$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( $user->ID, false, $period, false, $eot_time_current );
+			if ( $payment->get_recurring() ) {
+				// Calculate EOT time for period from today
+				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( 0, false, false, $period, 0, $eot_time_current );
+			} else {
+				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( $user->ID, false, $period, false, $eot_time_current );
+			}
 
 			update_user_option( $user->ID, 's2member_auto_eot_time', $eot_time_new );
 		}
 	}
 
 	public static function status_update( Pronamic_Pay_Payment $payment, $can_redirect = false ) {
-		$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( array(
-			'level'  => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', true ),
-			'period' => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', true ),
-		) );
+		$payment_data = Pronamic_WP_Pay_Extensions_S2Member_Util::get_payment_data( $payment );
+
+		$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( $payment_data );
 
 		$url = $data->get_normal_return_url();
+
+		// Get account by email
+		$user = get_user_by( 'email', $payment->get_email() );
 
 		switch ( $payment->status ) {
 			case Pronamic_WP_Pay_Statuses::CANCELLED :
 				$url = $data->get_cancel_url();
 
+				if ( $payment->get_recurring() ) {
+					Pronamic_WP_Pay_Extensions_S2Member_Util::auto_eot_now_user_update( $user );
+				}
+
 				break;
 			case Pronamic_WP_Pay_Statuses::EXPIRED :
 				$url = $data->get_error_url();
 
+				if ( $payment->get_recurring() ) {
+					Pronamic_WP_Pay_Extensions_S2Member_Util::auto_eot_now_user_update( $user );
+				}
+
 				break;
 			case Pronamic_WP_Pay_Statuses::FAILURE :
 				$url = $data->get_error_url();
+
+				if ( $payment->get_recurring() ) {
+					Pronamic_WP_Pay_Extensions_S2Member_Util::auto_eot_now_user_update( $user );
+				}
 
 				break;
 			case Pronamic_WP_Pay_Statuses::SUCCESS :
@@ -203,6 +287,51 @@ Best Regards,
 
 			exit;
 		}
+	}
+
+	//////////////////////////////////////////////////
+
+	/**
+	 * Send subscription renewal notice
+	 *
+	 * @param Pronamic_Pay_Subscription $subscription
+	 */
+	public static function subscription_renewal_notice( Pronamic_Pay_Subscription $subscription ) {
+		// Email
+		$email = $subscription->get_meta( 'email' );
+
+		// Subject
+		$subject = get_option( 'pronamic_pay_s2member_subscription_renewal_notice_email_subject' );
+
+		// Message
+		$message = get_option( 'pronamic_pay_s2member_subscription_renewal_notice_email_message' );
+
+		if ( '' === trim( $message ) ) {
+			return;
+		}
+
+		// Get renewal date
+		$next_payment = $subscription->get_next_payment_date();
+
+		if ( ! $next_payment ) {
+			return;
+		}
+
+		$subscription_renewal_date = date_i18n( get_option( 'date_format' ), $next_payment->getTimestamp() );
+
+		$replacements = array(
+			'%%email%%'                     => $email,
+			'%%amount%%'                    => $subscription->get_amount(),
+			'%%subscription_cancel_url%%'   => $subscription->get_cancel_url(),
+			'%%subscription_renewal_url%%'  => $subscription->get_renewal_url(),
+			'%%subscription_renewal_date%%' => $subscription_renewal_date,
+		);
+
+		$subject = strtr( $subject, $replacements );
+		$message = strtr( $message, $replacements );
+
+		// Mail
+		wp_mail( $email, $subject, $message );
 	}
 
 	//////////////////////////////////////////////////

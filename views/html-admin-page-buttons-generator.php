@@ -22,7 +22,11 @@
 						shortcode += ' cost="' + cost.val() + '"';
 
 					if ( period.val().length > 0 ) {
-						shortcode += ' period="' + period.val() + '"';
+						if ( 'R' === period.val().substr( 0, 1 ) ) {
+							shortcode += ' period="' + period.val().substr( 1 ) + '" recurring="Y"';
+						} else {
+							shortcode += ' period="' + period.val() + '"';
+						}
 					}
 
 					if ( level.val().length > 0 )
@@ -57,9 +61,31 @@
 							$select  = '';
 							$select .= '<select class="jPronamicIdealPeriodShortcode">';
 
+							$prev_recurring = null;
+
 							foreach ( Pronamic_WP_Pay_Extensions_S2Member_S2Member::get_periods() as $key => $period ) {
+								$is_recurring = ( 'R' === substr( $key, 0, 1 ) );
+
+								if ( $is_recurring !== $prev_recurring ) {
+									if ( null !== $prev_recurring ) {
+										$select .= '</optgroup>';
+									}
+
+									$label = __( 'Single payment', 'pronamic_ideal' );
+
+									if ( $is_recurring ) {
+										$label = __( 'Recurring payment', 'pronamic_ideal' );
+									}
+
+									$select .= sprintf( '<optgroup label="%s">', $label );
+								}
+
 								$select .= sprintf( '<option value="%s">%s</option>', $key, $period );
+
+								$prev_recurring = $is_recurring;
 							}
+
+							$select .= '</optgroup>';
 
 							$select .= '</select>';
 

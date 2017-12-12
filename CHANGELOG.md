@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 - 
 
+## [1.2.7] - 2017-12-12
+- 
+
 ## [1.2.6] - 2017-01-25
 - Added filter payment source description.
 
@@ -42,7 +45,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2015-01-20
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.6...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.7...HEAD
+[1.2.7]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.6...1.2.7
 [1.2.6]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.5...1.2.6
 [1.2.5]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.4...1.2.5
 [1.2.4]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.3...1.2.4

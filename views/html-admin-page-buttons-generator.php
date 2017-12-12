@@ -89,7 +89,8 @@
 
 							$select .= '</select>';
 
-							printf( __( 'I want to charge %s for %s', 'pronamic_ideal' ), $input, $select ); // WPCS: xss OK
+							/* translators: 1: amount input, 2: period select */
+							printf( __( 'I want to charge %1$s for %2$s', 'pronamic_ideal' ), $input, $select ); // WPCS: xss OK
 
 							?>
 							<?php
@@ -101,6 +102,7 @@
 							}
 							$select .= '</select>';
 
+							/* translators: %s: level select */
 							printf( __( 'access to level %s content.', 'pronamic_ideal' ), $select ); // WPCS: xss OK
 
 							?>
@@ -112,7 +114,12 @@
 						<p>
 							<?php esc_html_e( 'Button text:', 'pronamic_ideal' ); ?>
 							<input type="text" size="50" class="jPronamicIdealButtonTextShortcode" />
-							<?php printf( __( 'Default: <code>%s</code>.', 'pronamic_ideal' ), __( 'Pay', 'pronamic_ideal' ) ); // WPCS: xss OK ?>
+							<?php
+
+							/* translators: %s: Pay */
+							printf( __( 'Default: <code>%s</code>.', 'pronamic_ideal' ), __( 'Pay', 'pronamic_ideal' ) ); // WPCS: xss OK
+
+							?>
 						</p>
 						<p>
 							<?php esc_html_e( 'Payment Method', 'pronamic_ideal' ); ?>:

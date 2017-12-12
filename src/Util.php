@@ -53,7 +53,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Util {
 			return;
 		}
 
-		$auto_eot_time  = strtotime( 'now' );
+		$auto_eot_time = strtotime( 'now' );
 
 		if ( isset( $GLOBALS['WS_PLUGIN__']['s2member']['o']['eot_grace_time'] ) ) {
 			$eot_grace_time = (integer) $GLOBALS['WS_PLUGIN__']['s2member']['o']['eot_grace_time'];

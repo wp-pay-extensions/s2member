@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 - 
 
+## [1.2.7] - 2017-12-12
+- Add support for recurring payments.
+
 ## [1.2.6] - 2017-01-25
 - Added filter payment source description.
 
@@ -42,13 +45,14 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2015-01-20
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.6...HEAD
-[1.2.6]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.5...1.2.6
-[1.2.5]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.4...1.2.5
-[1.2.4]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.3...1.2.4
-[1.2.3]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.2...1.2.3
-[1.2.2]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.1...1.2.2
-[1.2.1]: https://github.com/wp-pay-extensions/gravityforms/compare/1.2.0...1.2.1
-[1.2.0]: https://github.com/wp-pay-extensions/gravityforms/compare/1.1.1...1.2.0
-[1.1.1]: https://github.com/wp-pay-extensions/gravityforms/compare/1.1.0...1.1.1
-[1.1.0]: https://github.com/wp-pay-extensions/gravityforms/compare/1.0.0...1.1.0
+[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/1.2.7...HEAD
+[1.2.7]: https://github.com/wp-pay-extensions/s2member/compare/1.2.6...1.2.7
+[1.2.6]: https://github.com/wp-pay-extensions/s2member/compare/1.2.5...1.2.6
+[1.2.5]: https://github.com/wp-pay-extensions/s2member/compare/1.2.4...1.2.5
+[1.2.4]: https://github.com/wp-pay-extensions/s2member/compare/1.2.3...1.2.4
+[1.2.3]: https://github.com/wp-pay-extensions/s2member/compare/1.2.2...1.2.3
+[1.2.2]: https://github.com/wp-pay-extensions/s2member/compare/1.2.1...1.2.2
+[1.2.1]: https://github.com/wp-pay-extensions/s2member/compare/1.2.0...1.2.1
+[1.2.0]: https://github.com/wp-pay-extensions/s2member/compare/1.1.1...1.2.0
+[1.1.1]: https://github.com/wp-pay-extensions/s2member/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/wp-pay-extensions/s2member/compare/1.0.0...1.1.0

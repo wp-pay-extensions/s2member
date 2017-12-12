@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.2.0
+ * @version 1.2.7
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Settings {
@@ -62,6 +62,36 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 				'label_for' => 'pronamic_pay_s2member_signup_email_message',
 			)
 		);
+
+		// Setting - Subscription renewal notice email subject
+		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_subscription_renewal_notice_email_subject' );
+
+		add_settings_field(
+			'pronamic_pay_s2member_subscription_renewal_notice_email_subject', // id
+			__( 'Subscription Renewal Notice Email Subject', 'pronamic_ideal' ), // title
+			array( $this, 'text_field' ), // callback
+			'pronamic_pay_s2member', // page
+			'pronamic_pay_s2member_general', // section
+			array( // args
+				'name'      => 'pronamic_pay_s2member_subscription_renewal_notice_email_subject',
+				'label_for' => 'pronamic_pay_s2member_subscription_renewal_notice_email_subject',
+			)
+		);
+
+		// Setting - Subscription renewal notice email message
+		register_setting( 'pronamic_pay_s2member', 'pronamic_pay_s2member_subscription_renewal_notice_email_message' );
+
+		add_settings_field(
+			'pronamic_pay_s2member_subscription_renewal_notice_email_message', // id
+			__( 'Subscription Renewal Notice Email Message', 'pronamic_ideal' ), // title
+			array( $this, 'wp_editor' ), // callback
+			'pronamic_pay_s2member', // page
+			'pronamic_pay_s2member_general', // section
+			array( // args
+				'name'      => 'pronamic_pay_s2member_subscription_renewal_notice_email_message',
+				'label_for' => 'pronamic_pay_s2member_subscription_renewal_notice_email_message',
+			)
+		);
 	}
 
 	//////////////////////////////////////////////////
@@ -73,6 +103,19 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 		$content = get_option( $args['name'] );
 
 		wp_editor( $content, $args['name'] );
+	}
+
+	/**
+	 * Text field.
+	 */
+	public function text_field( $args ) {
+		$value = get_option( $args['name'] );
+
+		printf(
+			'<input type="text" name="%s" value="%s" class="regular-text" />',
+			esc_attr( $args['name'] ),
+			esc_attr( $value )
+		);
 	}
 
 	//////////////////////////////////////////////////

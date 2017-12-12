@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
 <ruleset name="WordPress Pay s2Member rules">
+	<config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+
 	<rule ref="WordPress">
 		<exclude name="Generic.CodeAnalysis.UselessOverridingMethod.Found" />
 		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
@@ -8,5 +10,10 @@
 		<exclude name="Squiz.Commenting" />
 
 		<exclude name="Squiz.PHP.CommentedOutCode.Found" />
+
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+
+		<exclude name="WordPress.VIP.RestrictedFunctions.wp_redirect_wp_redirect" />
 	</rule>
 </ruleset>

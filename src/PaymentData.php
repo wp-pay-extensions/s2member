@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.2.5
+ * @version 1.2.7
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_PaymentData {
@@ -23,7 +23,23 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	public function __construct( $data ) {
 		parent::__construct();
 
-		$this->data = $data;
+		$this->data         = $data;
+		$this->recurring    = false;
+		$this->subscription = false;
+
+		$user_subscription_id = get_user_option( 's2member_subscr_id', $this->get_user_id() );
+
+		if ( '' !== $user_subscription_id ) {
+			$this->subscription = new Pronamic_WP_Pay_Subscription( $user_subscription_id );
+		}
+
+		if ( ! empty( $data['subscription_id'] ) ) {
+			$this->subscription = new Pronamic_WP_Pay_Subscription( $data['subscription_id'] );
+
+			if ( $this->subscription ) {
+				$this->recurring = true;
+			}
+		}
 	}
 
 	public function get_payment_method() {
@@ -54,11 +70,11 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 
 	public function get_description() {
 		$search = array(
-			'{{order_id}}'
+			'{{order_id}}',
 		);
 
 		$replace = array(
-			$this->get_order_id()
+			$this->get_order_id(),
 		);
 
 		return str_replace( $search, $replace, $this->data['description'] );
@@ -83,6 +99,12 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	}
 
 	public function get_source_id() {
+		if ( $this->recurring && $this->subscription ) {
+			$first = $this->subscription->get_first_payment();
+
+			return $first->get_source_id();
+		}
+
 		return $this->data['order_id'];
 	}
 
@@ -115,7 +137,13 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	}
 
 	public function get_customer_name() {
-		return parent::get_customer_name();
+		$customer_name = parent::get_customer_name();
+
+		if ( 'Y' === $this->data['recurring'] ) {
+			$customer_name = $this->get_email();
+		}
+
+		return $customer_name;
 	}
 
 	public function get_address() {
@@ -128,5 +156,47 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 
 	public function get_zip() {
 		return '';
+	}
+
+	//////////////////////////////////////////////////
+	// Subscription
+	//////////////////////////////////////////////////
+
+	/**
+	 * Get subscription.
+	 *
+	 * @return string|bool
+	 */
+	public function get_subscription() {
+		if ( 'Y' !== $this->data['recurring'] ) {
+			return false;
+		}
+
+		// Interval
+		$period = $this->get_period();
+
+		list( $interval, $interval_period ) = explode( ' ', $period );
+
+		if ( $this->subscription ) {
+			$subscription = $this->subscription;
+		} else {
+			$subscription = new Pronamic_Pay_Subscription();
+		}
+
+		$subscription->interval        = $interval;
+		$subscription->interval_period = $interval_period;
+		$subscription->amount          = $this->get_amount();
+		$subscription->currency        = $this->get_currency();
+		$subscription->description     = $this->get_description();
+
+		return $subscription;
+	}
+
+	public function get_subscription_id() {
+		if ( $this->subscription ) {
+			return $this->subscription->get_id();
+		}
+
+		return intval( $this->data['subscription_id'] );
 	}
 }

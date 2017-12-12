@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.2.5
+ * @version 1.2.7
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_PaymentData {
@@ -23,8 +23,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	public function __construct( $data ) {
 		parent::__construct();
 
-		$this->data = $data;
-		$this->recurring = false;
+		$this->data         = $data;
+		$this->recurring    = false;
 		$this->subscription = false;
 
 		$user_subscription_id = get_user_option( 's2member_subscr_id', $this->get_user_id() );
@@ -70,11 +70,11 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 
 	public function get_description() {
 		$search = array(
-			'{{order_id}}'
+			'{{order_id}}',
 		);
 
 		$replace = array(
-			$this->get_order_id()
+			$this->get_order_id(),
 		);
 
 		return str_replace( $search, $replace, $this->data['description'] );

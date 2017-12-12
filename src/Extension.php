@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.2.6
+ * @version 1.2.7
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_S2Member_Extension {
@@ -64,14 +64,15 @@ class Pronamic_WP_Pay_Extensions_S2Member_Extension {
 	 * Default option s2Member signup email message
 	 */
 	public static function default_option_s2member_signup_email_message( $default ) {
-		$default = sprintf( __( 'Thanks %s! Your membership has been approved.
+		/* translators: 1: %%email%%, 2: %%password%%, 3: blog name */
+		$default = sprintf( __( 'Thanks %1$s! Your membership has been approved.
 
-Your password is %s. Please change your password when you login.
+Your password is %2$s. Please change your password when you login.
 
 If you have any trouble, please feel free to contact us.
 
 Best Regards,
-%s', 'pronamic_ideal' ),
+%3$s', 'pronamic_ideal' ),
 			'%%email%%',
 			'%%password%%',
 			get_bloginfo( 'name' )
@@ -95,14 +96,15 @@ Best Regards,
 	 * Default option s2Member subscription renewal notice email message.
 	 */
 	public static function default_option_s2member_subscription_renewal_notice_email_message( $default ) {
-		$default = sprintf( __( 'Dear %s,
+		/* translators: 1: %%email%%, 2: %%subscription_renewal_date%%, 3: %%subscription_cancel_url%%, 4: blog name */
+		$default = sprintf( __( 'Dear %1$s,
 
-Your membership is due for renewal on %s.
+Your membership is due for renewal on %2$s.
 
-To cancel your subscription, visit %s
+To cancel your subscription, visit %3$s
 
 Best Regards,
-%s', 'pronamic_ideal' ),
+%4$s', 'pronamic_ideal' ),
 			'%%email%%',
 			'%%subscription_renewal_date%%',
 			'%%subscription_cancel_url%%',
@@ -187,7 +189,8 @@ Best Regards,
 		$user->set_role( $role );
 
 		$note = sprintf(
-			__( 'Update user "%s" to role "%s" and added custom capability "%s".', 'pronamic_ideal' ),
+			/* translators: 1: email, 2: role, 3: capability */
+			__( 'Update user "%1$s" to role "%2$s" and added custom capability "%3$s".', 'pronamic_ideal' ),
 			$email,
 			$role,
 			$capability
@@ -210,7 +213,7 @@ Best Regards,
 			$registration_times = array();
 		}
 
-		$registration_times[ 'level' . $level ]	 = $registration_time;
+		$registration_times[ 'level' . $level ] = $registration_time;
 
 		update_user_option( $user->ID, 's2member_paid_registration_times', $registration_times );
 
@@ -248,7 +251,7 @@ Best Regards,
 		$user = get_user_by( 'email', $payment->get_email() );
 
 		switch ( $payment->status ) {
-			case Pronamic_WP_Pay_Statuses::CANCELLED :
+			case Pronamic_WP_Pay_Statuses::CANCELLED:
 				$url = $data->get_cancel_url();
 
 				if ( $payment->get_recurring() ) {
@@ -256,7 +259,7 @@ Best Regards,
 				}
 
 				break;
-			case Pronamic_WP_Pay_Statuses::EXPIRED :
+			case Pronamic_WP_Pay_Statuses::EXPIRED:
 				$url = $data->get_error_url();
 
 				if ( $payment->get_recurring() ) {
@@ -264,7 +267,7 @@ Best Regards,
 				}
 
 				break;
-			case Pronamic_WP_Pay_Statuses::FAILURE :
+			case Pronamic_WP_Pay_Statuses::FAILURE:
 				$url = $data->get_error_url();
 
 				if ( $payment->get_recurring() ) {
@@ -272,11 +275,11 @@ Best Regards,
 				}
 
 				break;
-			case Pronamic_WP_Pay_Statuses::SUCCESS :
+			case Pronamic_WP_Pay_Statuses::SUCCESS:
 				$url = $data->get_success_url();
 
 				break;
-			case Pronamic_WP_Pay_Statuses::OPEN :
+			case Pronamic_WP_Pay_Statuses::OPEN:
 				$url = $data->get_normal_return_url();
 
 				break;
@@ -340,7 +343,7 @@ Best Regards,
 	 * Source column
 	 */
 	public static function source_text( $text, Pronamic_WP_Pay_Payment $payment ) {
-		$text  = '';
+		$text = '';
 
 		$text .= __( 's2Member', 'pronamic_ideal' );
 

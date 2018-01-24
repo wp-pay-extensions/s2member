@@ -1,4 +1,6 @@
 <?php
+use Pronamic\WordPress\Pay\Payments\PaymentData;
+use Pronamic\WordPress\Pay\Subscriptions\Subscription;
 
 /**
  * Title: s2Member payment data
@@ -10,7 +12,7 @@
  * @version 1.2.7
  * @since 1.0.0
  */
-class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_PaymentData {
+class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends PaymentData {
 	public $data;
 
 	//////////////////////////////////////////////////
@@ -30,11 +32,11 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		$user_subscription_id = get_user_option( 's2member_subscr_id', $this->get_user_id() );
 
 		if ( '' !== $user_subscription_id ) {
-			$this->subscription = new Pronamic_WP_Pay_Subscription( $user_subscription_id );
+			$this->subscription = new Subscription( $user_subscription_id );
 		}
 
 		if ( ! empty( $data['subscription_id'] ) ) {
-			$this->subscription = new Pronamic_WP_Pay_Subscription( $data['subscription_id'] );
+			$this->subscription = new Subscription( $data['subscription_id'] );
 
 			if ( $this->subscription ) {
 				$this->recurring = true;

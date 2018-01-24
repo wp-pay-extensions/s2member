@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Plugin;
 
 /**
  * Title: s2Member shortcodes
@@ -93,7 +94,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 		$config_id = get_option( 'pronamic_pay_s2member_config_id' );
 
 		// Get the gateway from the configuration
-		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
+		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( $gateway ) {
 			if ( null !== $atts['payment_method'] ) {
@@ -189,7 +190,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 				$config_id = get_option( 'pronamic_pay_s2member_config_id' );
 
 				// Gateway
-				$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
+				$gateway = Plugin::get_gateway( $config_id );
 
 				// Data
 				$data = new Pronamic_WP_Pay_Extensions_S2Member_PaymentData( $data );
@@ -198,7 +199,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 
 				if ( ! empty( $email ) ) {
 					// Start
-					$payment = Pronamic_WP_Pay_Plugin::start( $config_id, $gateway, $data, $data->get_payment_method() );
+					$payment = Plugin::start( $config_id, $gateway, $data, $data->get_payment_method() );
 
 					update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data->get_period() );
 					update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', $data->get_level() );
@@ -214,7 +215,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 
 					if ( is_wp_error( $error ) ) {
 						// Set error message
-						$this->error[ $index ] = array( Pronamic_WP_Pay_Plugin::get_default_error_message() );
+						$this->error[ $index ] = array( Plugin::get_default_error_message() );
 
 						foreach ( $error->get_error_messages() as $message ) {
 							$this->error[ $index ][] = $message;

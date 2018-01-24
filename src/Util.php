@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
  * Title: s2Member utility class
@@ -70,7 +71,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Util {
 	 *
 	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
 	 */
-	public static function get_payment_data( Pronamic_WP_Pay_Payment $payment ) {
+	public static function get_payment_data( Payment $payment ) {
 		if ( $payment->get_recurring() ) {
 			return array(
 				'level'           => get_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_level', true ),

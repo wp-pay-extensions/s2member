@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
  * Title: s2Member extension
@@ -342,7 +343,7 @@ Best Regards,
 	/**
 	 * Source column
 	 */
-	public static function source_text( $text, Pronamic_WP_Pay_Payment $payment ) {
+	public static function source_text( $text, Payment $payment ) {
 		$text = '';
 
 		$text .= __( 's2Member', 'pronamic_ideal' );

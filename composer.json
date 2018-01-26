@@ -3,7 +3,7 @@
 	"description": "s2Member driver for the WordPress payment processing library.",
 	"keywords": ["wordpress", "wp", "pay", "s2member", "extension", "pronamic"],
 	"homepage": "http://www.wp-pay.org/extensions/s2member/",
-	"license": "GPL-3.0+",
+	"license": "GPL-3.0-or-later",
 	"authors": [
 		{
 			"name": "Pronamic",

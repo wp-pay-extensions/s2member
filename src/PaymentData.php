@@ -1,5 +1,7 @@
 <?php
 use Pronamic\WordPress\Pay\Payments\PaymentData;
+use Pronamic\WordPress\Pay\Payments\Item;
+use Pronamic\WordPress\Pay\Payments\Items;
 use Pronamic\WordPress\Pay\Subscriptions\Subscription;
 
 /**
@@ -83,9 +85,9 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends PaymentData {
 	}
 
 	public function get_items() {
-		$items = new Pronamic_IDeal_Items();
+		$items = new Items();
 
-		$item = new Pronamic_IDeal_Item();
+		$item = new Item();
 		$item->setNumber( $this->get_order_id() );
 		$item->setDescription( $this->get_description() );
 		$item->setPrice( $this->data['cost'] );

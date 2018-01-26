@@ -1,3 +1,8 @@
+<?php
+
+use Pronamic\WordPress\Pay\Core\PaymentMethods;
+
+?>
 <div class="wrap">
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
@@ -127,7 +132,7 @@
 								<option value=""><?php echo esc_html_x( 'All available methods', 'Payment method field', 'pronamic_ideal' ); ?></option>
 								<?php
 
-								$methods = Pronamic_WP_Pay_PaymentMethods::get_payment_methods();
+								$methods = PaymentMethods::get_payment_methods();
 
 								foreach ( $methods as $method => $name ) {
 									printf(

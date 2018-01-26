@@ -1,5 +1,6 @@
 <?php
 use Pronamic\WordPress\Pay\Plugin;
+use Pronamic\WordPress\Pay\Util;
 
 /**
  * Title: s2Member shortcodes
@@ -148,17 +149,17 @@ class Pronamic_WP_Pay_Extensions_S2Member_Shortcodes {
 
 			$output .= ' ';
 
-			$output .= Pronamic_IDeal_IDeal::htmlHiddenFields( array(
-				'pronamic_pay_s2member_index'             => $this->index,
-				'pronamic_pay_s2member_hash'              => $this->create_hash( $hash_data ),
-				'pronamic_pay_s2member_data[order_id]'    => $atts['order_id'],
-				'pronamic_pay_s2member_data[period]'      => $atts['period'],
-				'pronamic_pay_s2member_data[cost]'        => $atts['cost'],
-				'pronamic_pay_s2member_data[level]'       => $atts['level'],
-				'pronamic_pay_s2member_data[description]' => $atts['description'],
-				'pronamic_pay_s2member_data[ccaps]'       => $atts['ccaps'],
-				'pronamic_pay_s2member_data[payment_method]' => $atts['payment_method'],
-				'pronamic_pay_s2member_data[recurring]'   => $atts['recurring'],
+			$output .= Util::html_hidden_fields( array(
+				'pronamic_pay_s2member_index'                 => $this->index,
+				'pronamic_pay_s2member_hash'                  => $this->create_hash( $hash_data ),
+				'pronamic_pay_s2member_data[order_id]'        => $atts['order_id'],
+				'pronamic_pay_s2member_data[period]'          => $atts['period'],
+				'pronamic_pay_s2member_data[cost]'            => $atts['cost'],
+				'pronamic_pay_s2member_data[level]'           => $atts['level'],
+				'pronamic_pay_s2member_data[description]'     => $atts['description'],
+				'pronamic_pay_s2member_data[ccaps]'           => $atts['ccaps'],
+				'pronamic_pay_s2member_data[payment_method]'  => $atts['payment_method'],
+				'pronamic_pay_s2member_data[recurring]'       => $atts['recurring'],
 				'pronamic_pay_s2member_data[subscription_id]' => $atts['subscription_id'],
 			) );
 

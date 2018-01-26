@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Core\Statuses;
 use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
@@ -252,7 +253,7 @@ Best Regards,
 		$user = get_user_by( 'email', $payment->get_email() );
 
 		switch ( $payment->status ) {
-			case Pronamic_WP_Pay_Statuses::CANCELLED:
+			case Statuses::CANCELLED:
 				$url = $data->get_cancel_url();
 
 				if ( $payment->get_recurring() ) {
@@ -260,7 +261,7 @@ Best Regards,
 				}
 
 				break;
-			case Pronamic_WP_Pay_Statuses::EXPIRED:
+			case Statuses::EXPIRED:
 				$url = $data->get_error_url();
 
 				if ( $payment->get_recurring() ) {
@@ -268,7 +269,7 @@ Best Regards,
 				}
 
 				break;
-			case Pronamic_WP_Pay_Statuses::FAILURE:
+			case Statuses::FAILURE:
 				$url = $data->get_error_url();
 
 				if ( $payment->get_recurring() ) {
@@ -276,11 +277,11 @@ Best Regards,
 				}
 
 				break;
-			case Pronamic_WP_Pay_Statuses::SUCCESS:
+			case Statuses::SUCCESS:
 				$url = $data->get_success_url();
 
 				break;
-			case Pronamic_WP_Pay_Statuses::OPEN:
+			case Statuses::OPEN:
 				$url = $data->get_normal_return_url();
 
 				break;

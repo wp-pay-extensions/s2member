@@ -25,7 +25,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Pronamic\\WordPress\\Pay\\Extensions\\s2Member\\": "src/"
+			"Pronamic\\WordPress\\Pay\\Extensions\\S2Member\\": "src/"
 		}
 	},
 	"config": {

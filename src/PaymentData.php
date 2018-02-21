@@ -1,5 +1,8 @@
 <?php
-use Pronamic\WordPress\Pay\Payments\PaymentData;
+
+namespace Pronamic\WordPress\Pay\Extensions\S2Member;
+
+use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
 use Pronamic\WordPress\Pay\Payments\Item;
 use Pronamic\WordPress\Pay\Payments\Items;
 use Pronamic\WordPress\Pay\Subscriptions\Subscription;
@@ -10,11 +13,11 @@ use Pronamic\WordPress\Pay\Subscriptions\Subscription;
  * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.2.7
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends PaymentData {
+class PaymentData extends Pay_PaymentData {
 	public $data;
 
 	//////////////////////////////////////////////////
@@ -184,7 +187,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends PaymentData {
 		if ( $this->subscription ) {
 			$subscription = $this->subscription;
 		} else {
-			$subscription = new Pronamic_Pay_Subscription();
+			$subscription = new Subscription();
 		}
 
 		$subscription->interval        = $interval;

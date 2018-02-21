@@ -24,7 +24,9 @@
 		"source": "https://github.com/wp-pay-extensions/s2member"
 	},
 	"autoload": {
-		"classmap": ["src/"]
+		"psr-4": {
+			"Pronamic\\WordPress\\Pay\\Extensions\\s2Member\\": "src/"
+		}
 	},
 	"config": {
 		"platform": {

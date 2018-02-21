@@ -1,16 +1,18 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Extensions\S2Member;
+
 /**
  * Title: s2Member settings
  * Description:
  * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.2.7
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_S2Member_Settings {
+class Settings {
 	/**
 	 * Constructs and initializes an s2Member settings object
 	 */
@@ -39,7 +41,7 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 		add_settings_field(
 			'pronamic_pay_s2member_config_id', // id
 			__( 'Configuration', 'pronamic_ideal' ), // title
-			array( 'Pronamic_WP_Pay_Admin', 'dropdown_configs' ), // callback
+			array( 'Pronamic\WordPress\Pay\Admin\AdminModule', 'dropdown_configs' ), // callback
 			'pronamic_pay_s2member', // page
 			'pronamic_pay_s2member_general', // section
 			array( // args
@@ -98,6 +100,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 
 	/**
 	 * WordPress editor
+	 *
+	 * @param $args
 	 */
 	public function wp_editor( $args ) {
 		$content = get_option( $args['name'] );
@@ -107,6 +111,8 @@ class Pronamic_WP_Pay_Extensions_S2Member_Settings {
 
 	/**
 	 * Text field.
+	 *
+	 * @param $args
 	 */
 	public function text_field( $args ) {
 		$value = get_option( $args['name'] );

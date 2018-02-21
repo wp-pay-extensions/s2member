@@ -1,6 +1,7 @@
 <?php
 
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Extensions\S2Member\S2Member;
 
 ?>
 <div class="wrap">
@@ -68,7 +69,7 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
 							$prev_recurring = null;
 
-							foreach ( Pronamic_WP_Pay_Extensions_S2Member_S2Member::get_periods() as $key => $period ) {
+							foreach ( S2Member::get_periods() as $key => $period ) {
 								$is_recurring = ( 'R' === substr( $key, 0, 1 ) );
 
 								if ( $is_recurring !== $prev_recurring ) {

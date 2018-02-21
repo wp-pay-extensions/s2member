@@ -1,5 +1,9 @@
 <?php
+
+namespace Pronamic\WordPress\Pay\Extensions\S2Member;
+
 use Pronamic\WordPress\Pay\Payments\Payment;
+use WP_User;
 
 /**
  * Title: s2Member utility class
@@ -7,16 +11,20 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.0.0
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_S2Member_Util {
+class Util {
 	/**
 	 * Converts an custom capabilities string to an array
 	 *
 	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
 	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/menu-pages/api-ops.inc.php#L192
+	 *
+	 * @param $string
+	 *
+	 * @return array
 	 */
 	public static function ccap_string_to_array( $string ) {
 		$array = explode( ',', $string );
@@ -29,6 +37,9 @@ class Pronamic_WP_Pay_Extensions_S2Member_Util {
 	 * Update users custom capabilities
 	 *
 	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
+	 *
+	 * @param WP_User $user
+	 * @param array   $custom_capabilities
 	 */
 	public static function ccap_user_update( WP_User $user, array $custom_capabilities ) {
 		// Remove all custom capabilities
@@ -70,6 +81,10 @@ class Pronamic_WP_Pay_Extensions_S2Member_Util {
 	 * Update users custom capabilities
 	 *
 	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
+	 *
+	 * @param Payment $payment
+	 *
+	 * @return array
 	 */
 	public static function get_payment_data( Payment $payment ) {
 		if ( $payment->get_recurring() ) {

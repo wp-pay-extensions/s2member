@@ -35,8 +35,6 @@ class Shortcodes {
 		add_shortcode( 'pronamic_ideal_s2member', array( $this, 'shortcode_pay' ) );
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Create an hash
 	 *
@@ -49,8 +47,6 @@ class Shortcodes {
 
 		return sha1( implode( '', $data ) . AUTH_SALT );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Handles the generation of the form from shortcode arguments.
@@ -180,8 +176,6 @@ class Shortcodes {
 
 		return $output;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Handle payment

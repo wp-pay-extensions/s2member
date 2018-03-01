@@ -21,8 +21,6 @@ class Settings {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Admin intialize
 	 */
@@ -96,8 +94,6 @@ class Settings {
 		);
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * WordPress editor
 	 *
@@ -123,8 +119,6 @@ class Settings {
 			esc_attr( $value )
 		);
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Admin menu
@@ -154,8 +148,6 @@ class Settings {
 			array( $this, 'page_buttons_generator' )
 		);
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Page view options

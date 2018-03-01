@@ -20,8 +20,6 @@ use Pronamic\WordPress\Pay\Subscriptions\Subscription;
 class PaymentData extends Pay_PaymentData {
 	public $data;
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Constructs and intialize an s2Member payment data object
 	 *
@@ -53,10 +51,6 @@ class PaymentData extends Pay_PaymentData {
 		return $this->data['payment_method'];
 	}
 
-	//////////////////////////////////////////////////
-	// s2Member specific data
-	//////////////////////////////////////////////////
-
 	public function get_period() {
 		return $this->data['period'];
 	}
@@ -68,8 +62,6 @@ class PaymentData extends Pay_PaymentData {
 	public function get_ccaps() {
 		return $this->data['ccaps'];
 	}
-
-	//////////////////////////////////////////////////
 
 	public function get_order_id() {
 		return $this->data['order_id'];
@@ -115,10 +107,6 @@ class PaymentData extends Pay_PaymentData {
 		return $this->data['order_id'];
 	}
 
-	//////////////////////////////////////////////////
-	// Currency
-	//////////////////////////////////////////////////
-
 	/**
 	 * Get currency
 	 *
@@ -128,10 +116,6 @@ class PaymentData extends Pay_PaymentData {
 	public function get_currency_alphabetic_code() {
 		return 'EUR';
 	}
-
-	//////////////////////////////////////////////////
-	// Customer
-	//////////////////////////////////////////////////
 
 	public function get_email() {
 		$email = parent::get_email();
@@ -164,10 +148,6 @@ class PaymentData extends Pay_PaymentData {
 	public function get_zip() {
 		return '';
 	}
-
-	//////////////////////////////////////////////////
-	// Subscription
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get subscription.

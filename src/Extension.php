@@ -26,16 +26,12 @@ class Extension {
 	 */
 	const SLUG = 's2member';
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Bootstrap
 	 */
 	public static function bootstrap() {
 		add_action( 'plugins_loaded', array( __CLASS__, 'plugins_loaded' ), 100 );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Plugins loaded
@@ -68,8 +64,6 @@ class Extension {
 		add_filter( 'default_option_' . $option_name, array( __CLASS__, 'default_option_s2member_subscription_renewal_notice_email_message' ) );
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Default option s2Member signup email message
 	 */
@@ -90,8 +84,6 @@ Best Regards,
 
 		return $default;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Default option s2Member subscription renewal notice email subject.
@@ -119,8 +111,6 @@ Best Regards,
 			get_bloginfo( 'name' )
 		);
 	}
-
-	//////////////////////////////////////////////////
 
 	public static function update_status_unknown_to_success( Payment $payment, $can_redirect = false ) {
 		$payment_data = Util::get_payment_data( $payment );
@@ -298,8 +288,6 @@ Best Regards,
 		}
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Send subscription renewal notice
 	 *
@@ -342,8 +330,6 @@ Best Regards,
 		// Mail
 		wp_mail( $email, $subject, $message );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Source text.

@@ -25,8 +25,6 @@ class S2Member {
 		return defined( 'WS_PLUGIN__S2MEMBER_VERSION' );
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Get periods
 	 *

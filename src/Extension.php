@@ -318,7 +318,7 @@ Best Regards,
 
 		$replacements = array(
 			'%%email%%'                     => $email,
-			'%%amount%%'                    => $subscription->get_amount(),
+			'%%amount%%'                    => $subscription->get_amount()->format_i18n(),
 			'%%subscription_cancel_url%%'   => $subscription->get_cancel_url(),
 			'%%subscription_renewal_url%%'  => $subscription->get_renewal_url(),
 			'%%subscription_renewal_date%%' => $subscription_renewal_date,

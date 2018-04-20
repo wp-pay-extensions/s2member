@@ -2,6 +2,7 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
+use Pronamic\WordPress\Money\Money;
 use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
 use Pronamic\WordPress\Pay\Payments\Item;
 use Pronamic\WordPress\Pay\Payments\Items;
@@ -172,9 +173,12 @@ class PaymentData extends Pay_PaymentData {
 
 		$subscription->interval        = $interval;
 		$subscription->interval_period = $interval_period;
-		$subscription->amount          = $this->get_amount();
-		$subscription->currency        = $this->get_currency();
 		$subscription->description     = $this->get_description();
+
+		$subscription->set_amount(new Money(
+			$this->get_amount()->get_amount(),
+			$this->get_currency_alphabetic_code()
+		) );
 
 		return $subscription;
 	}

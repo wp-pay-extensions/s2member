@@ -230,8 +230,12 @@ Best Regards,
 			}
 
 			if ( $payment->get_recurring() ) {
+				add_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
+
 				// Calculate EOT time for period from today
 				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( 0, false, false, $period, 0, $eot_time_current );
+
+				remove_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
 			} else {
 				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( $user->ID, false, $period, false, $eot_time_current );
 			}

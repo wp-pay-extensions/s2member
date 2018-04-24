@@ -47,7 +47,7 @@ class Extension {
 
 		$slug = 's2member';
 
-		add_action( "pronamic_payment_status_update_{$slug}_unknown_to_success", array( __CLASS__, 'update_status_unknown_to_success' ), 10, 2 );
+		add_action( 'pronamic_payment_status_update_' . $slug, array( __CLASS__, 'update_status' ), 10, 1 );
 		add_action( 'pronamic_subscription_renewal_notice_' . self::SLUG, array( __CLASS__, 'subscription_renewal_notice' ) );
 
 		add_action( 'pronamic_payment_status_update_' . $slug, array( __CLASS__, 'status_update' ), 10, 2 );
@@ -112,7 +112,11 @@ Best Regards,
 		);
 	}
 
-	public static function update_status_unknown_to_success( Payment $payment, $can_redirect = false ) {
+	public static function update_status( Payment $payment ) {
+		if ( Statuses::SUCCESS !== $payment->get_status() ) {
+			return;
+		}
+
 		$payment_data = Util::get_payment_data( $payment );
 
 		$data = new PaymentData( $payment_data );

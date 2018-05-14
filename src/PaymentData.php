@@ -1,19 +1,25 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Extensions\S2Member;
+
+use Pronamic\WordPress\Money\Money;
+use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
+use Pronamic\WordPress\Pay\Payments\Item;
+use Pronamic\WordPress\Pay\Payments\Items;
+use Pronamic\WordPress\Pay\Subscriptions\Subscription;
+
 /**
  * Title: s2Member payment data
  * Description:
- * Copyright: Copyright (c) 2005 - 2017
+ * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
- * @version 1.2.7
- * @since 1.0.0
+ * @author  Remco Tolsma
+ * @version 2.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_PaymentData {
+class PaymentData extends Pay_PaymentData {
 	public $data;
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Constructs and intialize an s2Member payment data object
@@ -30,11 +36,11 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		$user_subscription_id = get_user_option( 's2member_subscr_id', $this->get_user_id() );
 
 		if ( '' !== $user_subscription_id ) {
-			$this->subscription = new Pronamic_WP_Pay_Subscription( $user_subscription_id );
+			$this->subscription = new Subscription( $user_subscription_id );
 		}
 
 		if ( ! empty( $data['subscription_id'] ) ) {
-			$this->subscription = new Pronamic_WP_Pay_Subscription( $data['subscription_id'] );
+			$this->subscription = new Subscription( $data['subscription_id'] );
 
 			if ( $this->subscription ) {
 				$this->recurring = true;
@@ -45,10 +51,6 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	public function get_payment_method() {
 		return $this->data['payment_method'];
 	}
-
-	//////////////////////////////////////////////////
-	// s2Member specific data
-	//////////////////////////////////////////////////
 
 	public function get_period() {
 		return $this->data['period'];
@@ -61,8 +63,6 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	public function get_ccaps() {
 		return $this->data['ccaps'];
 	}
-
-	//////////////////////////////////////////////////
 
 	public function get_order_id() {
 		return $this->data['order_id'];
@@ -81,9 +81,9 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	}
 
 	public function get_items() {
-		$items = new Pronamic_IDeal_Items();
+		$items = new Items();
 
-		$item = new Pronamic_IDeal_Item();
+		$item = new Item();
 		$item->setNumber( $this->get_order_id() );
 		$item->setDescription( $this->get_description() );
 		$item->setPrice( $this->data['cost'] );
@@ -108,10 +108,6 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		return $this->data['order_id'];
 	}
 
-	//////////////////////////////////////////////////
-	// Currency
-	//////////////////////////////////////////////////
-
 	/**
 	 * Get currency
 	 *
@@ -121,10 +117,6 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 	public function get_currency_alphabetic_code() {
 		return 'EUR';
 	}
-
-	//////////////////////////////////////////////////
-	// Customer
-	//////////////////////////////////////////////////
 
 	public function get_email() {
 		$email = parent::get_email();
@@ -158,10 +150,6 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		return '';
 	}
 
-	//////////////////////////////////////////////////
-	// Subscription
-	//////////////////////////////////////////////////
-
 	/**
 	 * Get subscription.
 	 *
@@ -180,14 +168,17 @@ class Pronamic_WP_Pay_Extensions_S2Member_PaymentData extends Pronamic_WP_Pay_Pa
 		if ( $this->subscription ) {
 			$subscription = $this->subscription;
 		} else {
-			$subscription = new Pronamic_Pay_Subscription();
+			$subscription = new Subscription();
 		}
 
 		$subscription->interval        = $interval;
 		$subscription->interval_period = $interval_period;
-		$subscription->amount          = $this->get_amount();
-		$subscription->currency        = $this->get_currency();
 		$subscription->description     = $this->get_description();
+
+		$subscription->set_amount(new Money(
+			$this->get_amount()->get_amount(),
+			$this->get_currency_alphabetic_code()
+		) );
 
 		return $subscription;
 	}

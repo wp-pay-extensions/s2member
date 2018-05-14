@@ -1,3 +1,9 @@
+<?php
+
+use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Extensions\S2Member\S2Member;
+
+?>
 <div class="wrap">
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
@@ -63,7 +69,7 @@
 
 							$prev_recurring = null;
 
-							foreach ( Pronamic_WP_Pay_Extensions_S2Member_S2Member::get_periods() as $key => $period ) {
+							foreach ( S2Member::get_periods() as $key => $period ) {
 								$is_recurring = ( 'R' === substr( $key, 0, 1 ) );
 
 								if ( $is_recurring !== $prev_recurring ) {
@@ -127,7 +133,7 @@
 								<option value=""><?php echo esc_html_x( 'All available methods', 'Payment method field', 'pronamic_ideal' ); ?></option>
 								<?php
 
-								$methods = Pronamic_WP_Pay_PaymentMethods::get_payment_methods();
+								$methods = PaymentMethods::get_payment_methods();
 
 								foreach ( $methods as $method => $name ) {
 									printf(

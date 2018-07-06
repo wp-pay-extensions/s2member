@@ -132,8 +132,8 @@ class Settings {
 
 		add_submenu_page(
 			$parent_slug,
-			__( 'Pronamic iDEAL Options', 'pronamic_ideal' ),
-			__( 'iDEAL Options', 'pronamic_ideal' ),
+			__( 'Pronamic Pay Options', 'pronamic_ideal' ),
+			__( 'Payment Options', 'pronamic_ideal' ),
 			'create_users',
 			'pronamic_pay_s2member_settings',
 			array( $this, 'page_options' )
@@ -141,8 +141,8 @@ class Settings {
 
 		add_submenu_page(
 			$parent_slug,
-			__( 'Pronamic iDEAL Buttons Generator', 'pronamic_ideal' ),
-			__( 'iDEAL Buttons', 'pronamic_ideal' ),
+			__( 'Pronamic Pay Buttons Generator', 'pronamic_ideal' ),
+			__( 'Payment Buttons', 'pronamic_ideal' ),
 			'create_users',
 			'pronamic_pay_s2member_buttons',
 			array( $this, 'page_buttons_generator' )

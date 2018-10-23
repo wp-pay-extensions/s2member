@@ -19,8 +19,8 @@ class Util {
 	/**
 	 * Converts an custom capabilities string to an array
 	 *
-	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
-	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/menu-pages/api-ops.inc.php#L192
+	 * @link https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
+	 * @link https://github.com/websharks/s2member/blob/150311/s2member/includes/menu-pages/api-ops.inc.php#L192
 	 *
 	 * @param $string
 	 *
@@ -36,7 +36,7 @@ class Util {
 	/**
 	 * Update users custom capabilities
 	 *
-	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
+	 * @link https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
 	 *
 	 * @param WP_User $user
 	 * @param array   $custom_capabilities
@@ -80,7 +80,7 @@ class Util {
 	/**
 	 * Update users custom capabilities
 	 *
-	 * @see https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
+	 * @link https://github.com/websharks/s2member/blob/150311/s2member/includes/classes/paypal-notify-in-subscr-modify-w-level.inc.php#L103-L111
 	 *
 	 * @param Payment $payment
 	 *

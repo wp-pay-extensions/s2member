@@ -176,7 +176,7 @@ class PaymentData extends Pay_PaymentData {
 		$subscription->description     = $this->get_description();
 
 		$subscription->set_amount(new Money(
-			$this->get_amount()->get_amount(),
+			$this->get_amount()->get_value(),
 			$this->get_currency_alphabetic_code()
 		) );
 

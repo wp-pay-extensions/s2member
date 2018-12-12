@@ -9,7 +9,7 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 1.2.7
+ * @version 2.0.1
  * @since   1.0.0
  */
 class Settings {

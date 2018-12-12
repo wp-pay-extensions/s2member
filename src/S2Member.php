@@ -16,8 +16,8 @@ class S2Member {
 	/**
 	 * Check if s2Member is active (Automattic/developer style)
 	 *
-	 * @see https://github.com/WebSharks/s2Member/blob/130816/s2member/s2member.php#L69
-	 * @see https://github.com/Automattic/developer/blob/1.1.2/developer.php#L73
+	 * @link https://github.com/WebSharks/s2Member/blob/130816/s2member/s2member.php#L69
+	 * @link https://github.com/Automattic/developer/blob/1.1.2/developer.php#L73
 	 *
 	 * @return boolean
 	 */

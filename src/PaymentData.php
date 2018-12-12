@@ -15,7 +15,7 @@ use Pronamic\WordPress\Pay\Subscriptions\Subscription;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.0
+ * @version 2.0.1
  * @since   1.0.0
  */
 class PaymentData extends Pay_PaymentData {
@@ -84,10 +84,10 @@ class PaymentData extends Pay_PaymentData {
 		$items = new Items();
 
 		$item = new Item();
-		$item->setNumber( $this->get_order_id() );
-		$item->setDescription( $this->get_description() );
-		$item->setPrice( $this->data['cost'] );
-		$item->setQuantity( 1 );
+		$item->set_number( $this->get_order_id() );
+		$item->set_description( $this->get_description() );
+		$item->set_price( $this->data['cost'] );
+		$item->set_quantity( 1 );
 
 		$items->addItem( $item );
 
@@ -176,7 +176,7 @@ class PaymentData extends Pay_PaymentData {
 		$subscription->description     = $this->get_description();
 
 		$subscription->set_amount(new Money(
-			$this->get_amount()->get_amount(),
+			$this->get_amount()->get_value(),
 			$this->get_currency_alphabetic_code()
 		) );
 

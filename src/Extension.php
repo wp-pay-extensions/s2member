@@ -222,7 +222,7 @@ Best Regards,
 			delete_user_option( $user->ID, 's2member_auto_eot_time' );
 		} else {
 			// Auto end of time
-			// @see https://github.com/WebSharks/s2Member/blob/131126/s2member/includes/classes/utils-time.inc.php#L100
+			// @link https://github.com/WebSharks/s2Member/blob/131126/s2member/includes/classes/utils-time.inc.php#L100
 			$eot_time_current = get_user_option( 's2member_auto_eot_time', $user->ID );
 
 			if ( ! is_numeric( $eot_time_current ) ) {

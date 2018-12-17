@@ -39,6 +39,8 @@ cache:
 before_install:
   # Install latest version of Node.js (https://github.com/creationix/nvm).
   - if [ "${TRAVIS_DIST_PRECISE}" == "1" ]; then nvm install node; fi
+  # Create database for PHPUnit tests.
+  - mysql -e 'CREATE DATABASE wp_phpunit_tests;'
 
 install:
   # Install Grunt command line interface (https://github.com/gruntjs/grunt-cli).
@@ -49,6 +51,9 @@ install:
   - composer self-update
   # Install Composer packages.
   - composer install
+  # Test on specific WordPress version.
+  - if [ "$WP_VERSION" ]; then composer require wp-phpunit/wp-phpunit:$WP_VERSION --dev; fi
+  - if [ "$WP_VERSION" ]; then composer require johnpbloch/wordpress:$WP_VERSION --dev --update-with-dependencies; fi
 
 before_script:
   - wget https://raw.githubusercontent.com/wp-cli/sample-plugin/master/bin/install-wp-tests.sh

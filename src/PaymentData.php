@@ -11,7 +11,7 @@ use Pronamic\WordPress\Pay\Subscriptions\Subscription;
 /**
  * Title: s2Member payment data
  * Description:
- * Copyright: Copyright (c) 2005 - 2018
+ * Copyright: 2005-2019 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma

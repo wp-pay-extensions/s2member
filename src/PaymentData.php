@@ -175,7 +175,7 @@ class PaymentData extends Pay_PaymentData {
 		$subscription->interval_period = $interval_period;
 		$subscription->description     = $this->get_description();
 
-		$subscription->set_amount(new Money(
+		$subscription->set_total_amount( new Money(
 			$this->get_amount()->get_value(),
 			$this->get_currency_alphabetic_code()
 		) );

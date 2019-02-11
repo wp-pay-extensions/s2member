@@ -41,7 +41,7 @@ class Extension {
 			return;
 		}
 
-		// Bridge Classes
+		// Bridge classes.
 		new Settings();
 		new Shortcodes();
 
@@ -66,17 +66,23 @@ class Extension {
 
 	/**
 	 * Default option s2Member signup email message
+	 *
+	 * @param string $default Default.
 	 */
 	public static function default_option_s2member_signup_email_message( $default ) {
-		/* translators: 1: %%email%%, 2: %%password%%, 3: blog name */
-		$default = sprintf( __( 'Thanks %1$s! Your membership has been approved.
+		$default = sprintf(
+			/* translators: 1: %%email%%, 2: %%password%%, 3: blog name */
+			__(
+				'Thanks %1$s! Your membership has been approved.
 
 Your password is %2$s. Please change your password when you login.
 
 If you have any trouble, please feel free to contact us.
 
 Best Regards,
-%3$s', 'pronamic_ideal' ),
+%3$s',
+				'pronamic_ideal'
+			),
 			'%%email%%',
 			'%%password%%',
 			get_bloginfo( 'name' )
@@ -87,6 +93,8 @@ Best Regards,
 
 	/**
 	 * Default option s2Member subscription renewal notice email subject.
+	 *
+	 * @param string $default Default.
 	 */
 	public static function default_option_s2member_subscription_renewal_notice_email_subject( $default ) {
 		return __( 'Subscription Renewal Notice', 'pronamic_ideal' ) . ' | ' . get_bloginfo( 'name' );
@@ -94,17 +102,23 @@ Best Regards,
 
 	/**
 	 * Default option s2Member subscription renewal notice email message.
+	 *
+	 * @param string $default Default.
 	 */
 	public static function default_option_s2member_subscription_renewal_notice_email_message( $default ) {
-		/* translators: 1: %%email%%, 2: %%subscription_renewal_date%%, 3: %%subscription_cancel_url%%, 4: blog name */
-		return sprintf( __( 'Dear %1$s,
+		return sprintf(
+			/* translators: 1: %%email%%, 2: %%subscription_renewal_date%%, 3: %%subscription_cancel_url%%, 4: blog name */
+			__(
+				'Dear %1$s,
 
 Your membership is due for renewal on %2$s.
 
 To cancel your subscription, visit %3$s
 
 Best Regards,
-%4$s', 'pronamic_ideal' ),
+%4$s',
+				'pronamic_ideal'
+			),
 			'%%email%%',
 			'%%subscription_renewal_date%%',
 			'%%subscription_cancel_url%%',
@@ -112,6 +126,11 @@ Best Regards,
 		);
 	}
 
+	/**
+	 * Update status.
+	 *
+	 * @param Payment $payment Payment.
+	 */
 	public static function update_status( Payment $payment ) {
 		if ( Statuses::SUCCESS !== $payment->get_status() ) {
 			return;
@@ -123,7 +142,7 @@ Best Regards,
 
 		$email = $payment->get_email();
 
-		// get account from email
+		// Get account from email address.
 		$user = get_user_by( 'email', $email );
 
 		if ( ! $user && $payment->get_recurring() ) {
@@ -133,16 +152,16 @@ Best Regards,
 
 		// No valid user?
 		if ( ! $user ) {
-			// Make a random string for password
+			// Make a random string for password.
 			$random_string = wp_generate_password( 10 );
 
-			// Make a user with the username as the email
+			// Make a user with the username as the email.
 			$user_id = wp_create_user( $email, $random_string, $email );
 
-			// Subject
+			// Subject.
 			$subject = __( 'Account Confirmation', 'pronamic_ideal' ) . ' | ' . get_bloginfo( 'name' );
 
-			// Message
+			// Message.
 			$message = get_option( 'pronamic_pay_s2member_signup_email_message' );
 
 			$message = str_replace(
@@ -157,12 +176,12 @@ Best Regards,
 				$message
 			);
 
-			// Mail
+			// Mail.
 			wp_mail( $email, $subject, $message );
 
 			$user = new WP_User( $user_id );
 
-			// Update subscription post author
+			// Update subscription post author.
 			if ( $payment->get_subscription_id() ) {
 				$arg = array(
 					'ID'          => $payment->get_subscription_id(),
@@ -184,8 +203,7 @@ Best Regards,
 		$capability = 'access_s2member_level' . $level;
 		$role       = 's2member_level' . $level;
 
-		// Update user role
-		//$user->add_cap( $capability ); // TODO Perhaps this should line be removed. At s2Member EOT this capability is not removed, which allows the user to illegitimately view the protected content.
+		// Update user role.
 		$user->set_role( $role );
 
 		$note = sprintf(
@@ -198,14 +216,14 @@ Best Regards,
 
 		$payment->add_note( $note );
 
-		// Custom Capabilities
+		// Custom Capabilities.
 		if ( ! empty( $ccaps ) ) {
 			$ccaps = Util::ccap_string_to_array( $ccaps );
 
 			Util::ccap_user_update( $user, $ccaps );
 		}
 
-		// Registration times
+		// Registration times.
 		$registration_time = time();
 
 		$registration_times = get_user_option( 's2member_paid_registration_times', $user->ID );
@@ -218,11 +236,13 @@ Best Regards,
 		update_user_option( $user->ID, 's2member_paid_registration_times', $registration_times );
 
 		if ( in_array( $period, array( '1 L' ), true ) ) {
-			// Lifetime, delete end of time option
+			// Lifetime, delete end of time option.
 			delete_user_option( $user->ID, 's2member_auto_eot_time' );
 		} else {
-			// Auto end of time
-			// @link https://github.com/WebSharks/s2Member/blob/131126/s2member/includes/classes/utils-time.inc.php#L100
+			/*
+			 * Auto end of time.
+			 * @link https://github.com/WebSharks/s2Member/blob/131126/s2member/includes/classes/utils-time.inc.php#L100
+			 */
 			$eot_time_current = get_user_option( 's2member_auto_eot_time', $user->ID );
 
 			if ( ! is_numeric( $eot_time_current ) ) {
@@ -232,7 +252,7 @@ Best Regards,
 			if ( $payment->get_recurring() ) {
 				add_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
 
-				// Calculate EOT time for period from today
+				// Calculate EOT time for period from today.
 				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( 0, false, false, $period, 0, $eot_time_current );
 
 				remove_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
@@ -244,6 +264,12 @@ Best Regards,
 		}
 	}
 
+	/**
+	 * Status update.
+	 *
+	 * @param Payment $payment      Payment.
+	 * @param bool    $can_redirect Can redirect.
+	 */
 	public static function status_update( Payment $payment, $can_redirect = false ) {
 		$payment_data = Util::get_payment_data( $payment );
 
@@ -251,7 +277,7 @@ Best Regards,
 
 		$url = $data->get_normal_return_url();
 
-		// Get account by email
+		// Get account by email.
 		$user = get_user_by( 'email', $payment->get_email() );
 
 		switch ( $payment->status ) {
@@ -299,23 +325,23 @@ Best Regards,
 	/**
 	 * Send subscription renewal notice
 	 *
-	 * @param Subscription $subscription
+	 * @param Subscription $subscription Subscription.
 	 */
 	public static function subscription_renewal_notice( Subscription $subscription ) {
-		// Email
+		// Email address.
 		$email = $subscription->get_meta( 'email' );
 
-		// Subject
+		// Subject.
 		$subject = get_option( 'pronamic_pay_s2member_subscription_renewal_notice_email_subject' );
 
-		// Message
+		// Message.
 		$message = get_option( 'pronamic_pay_s2member_subscription_renewal_notice_email_message' );
 
 		if ( '' === trim( $message ) ) {
 			return;
 		}
 
-		// Get renewal date
+		// Get renewal date.
 		$next_payment = $subscription->get_next_payment_date();
 
 		if ( ! $next_payment ) {
@@ -335,15 +361,15 @@ Best Regards,
 		$subject = strtr( $subject, $replacements );
 		$message = strtr( $message, $replacements );
 
-		// Mail
+		// Mail.
 		wp_mail( $email, $subject, $message );
 	}
 
 	/**
 	 * Source text.
 	 *
-	 * @param string  $text
-	 * @param Payment $payment
+	 * @param string  $text    Source text.
+	 * @param Payment $payment Payment.
 	 *
 	 * @return string
 	 */
@@ -354,8 +380,8 @@ Best Regards,
 	/**
 	 * Source description.
 	 *
-	 * @param string  $description
-	 * @param Payment $payment
+	 * @param string  $description Source description.
+	 * @param Payment $payment     Payment.
 	 *
 	 * @return string
 	 */

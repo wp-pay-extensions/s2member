@@ -18,11 +18,15 @@ use Pronamic\WordPress\Pay\Util as Pay_Util;
 class Shortcodes {
 	/**
 	 * Index to identify shortcodes
+	 *
+	 * @var int
 	 */
 	private $index = 0;
 
 	/**
 	 * Payment errors
+	 *
+	 * @var array
 	 */
 	private $error = array();
 
@@ -38,7 +42,7 @@ class Shortcodes {
 	/**
 	 * Create an hash
 	 *
-	 * @param array $data
+	 * @param array $data Data to hash.
 	 *
 	 * @return string
 	 */
@@ -64,7 +68,7 @@ class Shortcodes {
 	 *
 	 * description is text shown at payment.
 	 *
-	 * @param array $atts All arguments inside the shortcode
+	 * @param array $atts All arguments inside the shortcode.
 	 *
 	 * @return string
 	 */
@@ -83,18 +87,18 @@ class Shortcodes {
 			'subscription_id' => null,
 		);
 
-		// Combine the passed options
+		// Combine the passed options.
 		$atts = shortcode_atts( $defaults, $atts );
 
 		$atts['order_id'] = uniqid();
 
-		// Output
+		// Output.
 		$output = '';
 
-		// Get the config ID
+		// Get the config ID.
 		$config_id = get_option( 'pronamic_pay_s2member_config_id' );
 
-		// Get the gateway from the configuration
+		// Get the gateway from the configuration.
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( ! $gateway ) {
@@ -111,10 +115,10 @@ class Shortcodes {
 			}
 		}
 
-		// Data
+		// Data.
 		$data = new PaymentData( $atts );
 
-		// Hash
+		// Hash.
 		$hash_data = array(
 			'order_id'        => $atts['order_id'],
 			'period'          => $atts['period'],
@@ -127,7 +131,7 @@ class Shortcodes {
 			'subscription_id' => $atts['subscription_id'],
 		);
 
-		// Output
+		// Output.
 		$output .= $this->payment_error();
 
 		$output .= '<form method="post" action="">';
@@ -152,19 +156,21 @@ class Shortcodes {
 
 		$output .= ' ';
 
-		$output .= Pay_Util::html_hidden_fields( array(
-			'pronamic_pay_s2member_index'                 => $this->index,
-			'pronamic_pay_s2member_hash'                  => $this->create_hash( $hash_data ),
-			'pronamic_pay_s2member_data[order_id]'        => $atts['order_id'],
-			'pronamic_pay_s2member_data[period]'          => $atts['period'],
-			'pronamic_pay_s2member_data[cost]'            => $atts['cost'],
-			'pronamic_pay_s2member_data[level]'           => $atts['level'],
-			'pronamic_pay_s2member_data[description]'     => $atts['description'],
-			'pronamic_pay_s2member_data[ccaps]'           => $atts['ccaps'],
-			'pronamic_pay_s2member_data[payment_method]'  => $atts['payment_method'],
-			'pronamic_pay_s2member_data[recurring]'       => $atts['recurring'],
-			'pronamic_pay_s2member_data[subscription_id]' => $atts['subscription_id'],
-		) );
+		$output .= Pay_Util::html_hidden_fields(
+			array(
+				'pronamic_pay_s2member_index'             => $this->index,
+				'pronamic_pay_s2member_hash'              => $this->create_hash( $hash_data ),
+				'pronamic_pay_s2member_data[order_id]'    => $atts['order_id'],
+				'pronamic_pay_s2member_data[period]'      => $atts['period'],
+				'pronamic_pay_s2member_data[cost]'        => $atts['cost'],
+				'pronamic_pay_s2member_data[level]'       => $atts['level'],
+				'pronamic_pay_s2member_data[description]' => $atts['description'],
+				'pronamic_pay_s2member_data[ccaps]'       => $atts['ccaps'],
+				'pronamic_pay_s2member_data[payment_method]' => $atts['payment_method'],
+				'pronamic_pay_s2member_data[recurring]'   => $atts['recurring'],
+				'pronamic_pay_s2member_data[subscription_id]' => $atts['subscription_id'],
+			)
+		);
 
 		$output .= sprintf(
 			'<input name="%s" value="%s" type="submit" />',
@@ -193,13 +199,13 @@ class Shortcodes {
 			return;
 		}
 
-		// Config
+		// Config.
 		$config_id = get_option( 'pronamic_pay_s2member_config_id' );
 
-		// Gateway
+		// Gateway.
 		$gateway = Plugin::get_gateway( $config_id );
 
-		// Data
+		// Data.
 		$data = new PaymentData( $data );
 
 		$email = $data->get_email();
@@ -208,7 +214,7 @@ class Shortcodes {
 			return;
 		}
 
-		// Start
+		// Start.
 		$payment = Plugin::start( $config_id, $gateway, $data, $data->get_payment_method() );
 
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data->get_period() );
@@ -224,14 +230,14 @@ class Shortcodes {
 		$error = $gateway->get_error();
 
 		if ( is_wp_error( $error ) ) {
-			// Set error message
+			// Set error message.
 			$this->error[ $index ] = array( Plugin::get_default_error_message() );
 
 			foreach ( $error->get_error_messages() as $message ) {
 				$this->error[ $index ][] = $message;
 			}
 		} else {
-			// Redirect
+			// Redirect.
 			$gateway->redirect( $payment );
 		}
 	}
@@ -239,7 +245,7 @@ class Shortcodes {
 	/**
 	 * Payment error for shortcode
 	 *
-	 * @param int $index Shortcode index
+	 * @param int $index Shortcode index.
 	 *
 	 * @return bool/string Default: false. Error string in case of payment error
 	 *

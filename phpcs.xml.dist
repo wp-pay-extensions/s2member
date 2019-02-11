@@ -31,6 +31,6 @@
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 
-		<exclude name="WordPress.VIP.RestrictedFunctions.wp_redirect_wp_redirect" />
+		<exclude name="WordPress.Security.SafeRedirect.wp_redirect_wp_redirect" />
 	</rule>
 </ruleset>

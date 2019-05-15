@@ -18,12 +18,13 @@ module.exports = function( grunt ) {
 					'**/*.php',
 					'!node_modules/**',
 					'!vendor/**',
+					'!wordpress/**',
 					'!wp-content/**'
 				]
 			},
 			options: {
 				bin: 'vendor/bin/phpcs',
-				standard: 'phpcs.ruleset.xml',
+				standard: 'phpcs.xml.dist',
 				showSniffCodes: true
 			}
 		},
@@ -58,5 +59,5 @@ module.exports = function( grunt ) {
 	} );
 
 	// Default task(s).
-	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs' ] );
+	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs', 'phpunit' ] );
 };

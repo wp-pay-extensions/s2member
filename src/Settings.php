@@ -5,7 +5,7 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 /**
  * Title: s2Member settings
  * Description:
- * Copyright: Copyright (c) 2005 - 2018
+ * Copyright: 2005-2019 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma

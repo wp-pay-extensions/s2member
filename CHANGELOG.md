@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 - 
 
+## [2.0.3] - 2019-08-26
+- Updated packages.
+
 ## [2.0.2] - 2019-05-15
 - Set subscription 'total amount' instead of 'amount'.
 
@@ -55,7 +58,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2015-01-20
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/2.0.2...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/2.0.3...HEAD
+[2.0.3]: https://github.com/wp-pay-extensions/s2member/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/wp-pay-extensions/s2member/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/wp-pay-extensions/s2member/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/wp-pay-extensions/s2member/compare/1.2.7...2.0.0

@@ -342,13 +342,13 @@ Best Regards,
 		}
 
 		// Get renewal date.
-		$next_payment = $subscription->get_next_payment_date();
+		$next_payment_date = $subscription->get_next_payment_date();
 
-		if ( ! $next_payment ) {
+		if ( ! $next_payment_date ) {
 			return;
 		}
 
-		$subscription_renewal_date = date_i18n( get_option( 'date_format' ), $next_payment->getTimestamp() );
+		$subscription_renewal_date = date_i18n( get_option( 'date_format' ), $next_payment_date->getTimestamp() );
 
 		$replacements = array(
 			'%%email%%'                     => $email,

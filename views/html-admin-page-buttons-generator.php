@@ -96,10 +96,10 @@ use Pronamic\WordPress\Pay\Extensions\S2Member\S2Member;
 							$select .= '</select>';
 
 							/* translators: 1: amount input, 2: period select */
-							printf( __( 'I want to charge %1$s for %2$s', 'pronamic_ideal' ), $input, $select ); // WPCS: xss OK
+							$label = __( 'I want to charge %1$s for %2$s', 'pronamic_ideal' );
 
-							?>
-							<?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							printf( $label, $input, $select );
 
 							$select  = '';
 							$select .= '<select class="jPronamicIdealLevelShortcode">';
@@ -109,7 +109,10 @@ use Pronamic\WordPress\Pay\Extensions\S2Member\S2Member;
 							$select .= '</select>';
 
 							/* translators: %s: level select */
-							printf( __( 'access to level %s content.', 'pronamic_ideal' ), $select ); // WPCS: xss OK
+							$label = __( 'access to level %s content.', 'pronamic_ideal' );
+
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							printf( $label, $select );
 
 							?>
 						</p>
@@ -123,7 +126,13 @@ use Pronamic\WordPress\Pay\Extensions\S2Member\S2Member;
 							<?php
 
 							/* translators: %s: Pay */
-							printf( __( 'Default: <code>%s</code>.', 'pronamic_ideal' ), __( 'Pay', 'pronamic_ideal' ) ); // WPCS: xss OK
+							$label = __( 'Default: <code>%s</code>.', 'pronamic_ideal' );
+
+							printf(
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								$label,
+								esc_html__( 'Pay', 'pronamic_ideal' )
+							);
 
 							?>
 						</p>

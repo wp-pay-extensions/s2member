@@ -2,6 +2,9 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
+use c_ws_plugin__s2member_list_servers;
+use Pronamic\WordPress\Pay\Core\Util as Core_Util;
+use Pronamic\WordPress\Pay\Exceptions\PayException;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Util as Pay_Util;
 
@@ -152,6 +155,17 @@ class Shortcodes {
 			$output .= ' ';
 		}
 
+		// List servers opt-in checkbox.
+		if ( Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'list_servers_integrated' ) && ! empty( $GLOBALS['WS_PLUGIN__']['s2member']['o']['custom_reg_opt_in'] ) && c_ws_plugin__s2member_list_servers::list_servers_integrated() ) {
+			$output .= sprintf(
+				'<label for="pronamic_pay_s2member_opt_in">
+					<input type="checkbox" name="pronamic_pay_s2member_opt_in" id="pronamic_pay_s2member_opt_in" value="1" %1$s /> %2$s
+				</label><br />',
+				checked( $GLOBALS['WS_PLUGIN__']['s2member']['o']['custom_reg_opt_in'], 1, false ),
+				$GLOBALS['WS_PLUGIN__']['s2member']['o']['custom_reg_opt_in_label']
+			);
+		}
+
 		$output .= $gateway->get_input_html();
 
 		$output .= ' ';
@@ -191,9 +205,10 @@ class Shortcodes {
 			return;
 		}
 
-		$index = filter_input( INPUT_POST, 'pronamic_pay_s2member_index', FILTER_SANITIZE_STRING );
-		$hash  = filter_input( INPUT_POST, 'pronamic_pay_s2member_hash', FILTER_SANITIZE_STRING );
-		$data  = filter_input( INPUT_POST, 'pronamic_pay_s2member_data', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+		$index  = filter_input( INPUT_POST, 'pronamic_pay_s2member_index', FILTER_SANITIZE_STRING );
+		$hash   = filter_input( INPUT_POST, 'pronamic_pay_s2member_hash', FILTER_SANITIZE_STRING );
+		$data   = filter_input( INPUT_POST, 'pronamic_pay_s2member_data', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+		$opt_in = filter_input( INPUT_POST, 'pronamic_pay_s2member_opt_in', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( $hash !== $this->create_hash( $data ) ) {
 			return;
@@ -220,6 +235,11 @@ class Shortcodes {
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data->get_period() );
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', $data->get_level() );
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', $data->get_ccaps() );
+
+		// List server opt-in.
+		if ( ! empty( $opt_in ) ) {
+			update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_opt_in', $opt_in );
+		}
 
 		if ( $payment->get_subscription_id() ) {
 			update_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_period', $data->get_period() );

@@ -2,8 +2,10 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
+use c_ws_plugin__s2member_list_servers;
 use c_ws_plugin__s2member_utils_time;
 use Pronamic\WordPress\Pay\Core\Statuses;
+use Pronamic\WordPress\Pay\Core\Util as Core_Util;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Subscriptions\Subscription;
 use WP_User;
@@ -261,6 +263,15 @@ Best Regards,
 			}
 
 			update_user_option( $user->ID, 's2member_auto_eot_time', $eot_time_new );
+		}
+
+		// Subscribe with list servers.
+		if ( Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'process_list_servers' ) ) {
+			$ip = $payment->customer->get_ip_address();
+
+			$opt_in = 1 === \intval( get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_opt_in', true ) );
+
+			c_ws_plugin__s2member_list_servers::process_list_servers( $role, $level, $email, $random_string, $email, null, null, $ip, $opt_in, true, $user->ID );
 		}
 	}
 

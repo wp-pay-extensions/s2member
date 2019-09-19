@@ -4,6 +4,7 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
 use c_ws_plugin__s2member_list_servers;
 use c_ws_plugin__s2member_utils_time;
+use Pronamic\WordPress\Pay\Core\Server;
 use Pronamic\WordPress\Pay\Core\Statuses;
 use Pronamic\WordPress\Pay\Core\Util as Core_Util;
 use Pronamic\WordPress\Pay\Payments\Payment;
@@ -152,6 +153,8 @@ Best Regards,
 			return;
 		}
 
+		$random_string = '';
+
 		// No valid user?
 		if ( ! $user ) {
 			// Make a random string for password.
@@ -255,11 +258,11 @@ Best Regards,
 				add_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
 
 				// Calculate EOT time for period from today.
-				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( 0, false, false, $period, 0, $eot_time_current );
+				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( 0, '', '', $period, 0, $eot_time_current );
 
 				remove_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
 			} else {
-				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( $user->ID, false, $period, false, $eot_time_current );
+				$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( $user->ID, '', $period, false, $eot_time_current );
 			}
 
 			update_user_option( $user->ID, 's2member_auto_eot_time', $eot_time_new );
@@ -267,8 +270,16 @@ Best Regards,
 
 		// Subscribe with list servers.
 		if ( Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'process_list_servers' ) ) {
-			$ip = $payment->customer->get_ip_address();
+			// IP address.
+			$ip = Server::get( 'REMOTE_ADDR' );
 
+			$customer = $payment->customer;
+
+			if ( null !== $customer ) {
+				$ip = $customer->get_ip_address();
+			}
+
+			// Opt in?
 			$opt_in = 1 === \intval( get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_opt_in', true ) );
 
 			c_ws_plugin__s2member_list_servers::process_list_servers( $role, $level, $email, $random_string, $email, null, null, $ip, $opt_in, true, $user->ID );

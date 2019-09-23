@@ -279,10 +279,14 @@ Best Regards,
 				$ip = $customer->get_ip_address();
 			}
 
+			// Name.
+			$first_name = $user->first_name;
+			$last_name  = $user->last_name;
+
 			// Opt in?
 			$opt_in = 1 === \intval( get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_opt_in', true ) );
 
-			c_ws_plugin__s2member_list_servers::process_list_servers( $role, $level, $email, $random_string, $email, null, null, $ip, $opt_in, true, $user->ID );
+			c_ws_plugin__s2member_list_servers::process_list_servers( $role, $level, $email, $random_string, $email, $first_name, $last_name, $ip, $opt_in, true, $user->ID );
 		}
 	}
 

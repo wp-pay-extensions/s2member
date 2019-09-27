@@ -5,7 +5,7 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 use c_ws_plugin__s2member_list_servers;
 use c_ws_plugin__s2member_utils_time;
 use Pronamic\WordPress\Pay\Core\Server;
-use Pronamic\WordPress\Pay\Core\Statuses;
+use Pronamic\WordPress\Pay\Payments\PaymentStatus;
 use Pronamic\WordPress\Pay\Core\Util as Core_Util;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Subscriptions\Subscription;
@@ -135,7 +135,7 @@ Best Regards,
 	 * @param Payment $payment Payment.
 	 */
 	public static function update_status( Payment $payment ) {
-		if ( Statuses::SUCCESS !== $payment->get_status() ) {
+		if ( PaymentStatus::SUCCESS !== $payment->get_status() ) {
 			return;
 		}
 
@@ -307,7 +307,7 @@ Best Regards,
 		$user = get_user_by( 'email', $payment->get_email() );
 
 		switch ( $payment->status ) {
-			case Statuses::CANCELLED:
+			case PaymentStatus::CANCELLED:
 				$url = $data->get_cancel_url();
 
 				if ( $payment->get_recurring() ) {
@@ -315,7 +315,7 @@ Best Regards,
 				}
 
 				break;
-			case Statuses::EXPIRED:
+			case PaymentStatus::EXPIRED:
 				$url = $data->get_error_url();
 
 				if ( $payment->get_recurring() ) {
@@ -323,7 +323,7 @@ Best Regards,
 				}
 
 				break;
-			case Statuses::FAILURE:
+			case PaymentStatus::FAILURE:
 				$url = $data->get_error_url();
 
 				if ( $payment->get_recurring() ) {
@@ -331,11 +331,11 @@ Best Regards,
 				}
 
 				break;
-			case Statuses::SUCCESS:
+			case PaymentStatus::SUCCESS:
 				$url = $data->get_success_url();
 
 				break;
-			case Statuses::OPEN:
+			case PaymentStatus::OPEN:
 				$url = $data->get_normal_return_url();
 
 				break;

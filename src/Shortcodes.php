@@ -4,7 +4,6 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
 use c_ws_plugin__s2member_list_servers;
 use Pronamic\WordPress\Pay\Core\Util as Core_Util;
-use Pronamic\WordPress\Pay\Exceptions\PayException;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Util as Pay_Util;
 
@@ -230,7 +229,16 @@ class Shortcodes {
 		}
 
 		// Start.
-		$payment = Plugin::start( $config_id, $gateway, $data, $data->get_payment_method() );
+		try {
+			$payment = Plugin::start( $config_id, $gateway, $data, $data->get_payment_method() );
+		} catch ( \Pronamic\WordPress\Pay\PayException $e ) {
+			// Set error message.
+			$this->error[ $index ] = array( Plugin::get_default_error_message() );
+
+			$this->error[ $index ][] = $e->get_message();
+
+			$payment = $e->get_payment();
+		}
 
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data->get_period() );
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', $data->get_level() );
@@ -247,16 +255,7 @@ class Shortcodes {
 			update_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_ccaps', $data->get_ccaps() );
 		}
 
-		$error = $gateway->get_error();
-
-		if ( is_wp_error( $error ) ) {
-			// Set error message.
-			$this->error[ $index ] = array( Plugin::get_default_error_message() );
-
-			foreach ( $error->get_error_messages() as $message ) {
-				$this->error[ $index ][] = $message;
-			}
-		} else {
+		if ( ! isset( $this->error[ $index ] ) ) {
 			// Redirect.
 			$gateway->redirect( $payment );
 		}

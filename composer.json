@@ -31,6 +31,25 @@
 	"config": {
 		"sort-packages": true
 	},
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "wpsharks/s2member",
+				"version": "190822",
+				"source": {
+					"url": "https://github.com/wpsharks/s2member",
+					"type": "git",
+					"reference": "master"
+				},
+				"autoload": {
+					"classmap": [
+						"."
+					]
+				}
+			}
+		}
+	],
 	"require": {
 		"php": ">=5.6.20",
 		"wp-pay/core": "^2.2"
@@ -45,7 +64,8 @@
 		"roots/wordpress": "^5.2",
 		"squizlabs/php_codesniffer": "^3.4",
 		"wp-coding-standards/wpcs": "^2.1",
-		"wp-phpunit/wp-phpunit": "^5.2"
+		"wp-phpunit/wp-phpunit": "^5.2",
+		"wpsharks/s2member": "190822"
 	},
 	"scripts": {
 		"coveralls": "vendor/bin/coveralls -v",

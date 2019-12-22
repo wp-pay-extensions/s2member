@@ -4,7 +4,6 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
 use c_ws_plugin__s2member_list_servers;
 use Pronamic\WordPress\Pay\Core\Util as Core_Util;
-use Pronamic\WordPress\Pay\Exceptions\PayException;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Util as Pay_Util;
 
@@ -15,7 +14,7 @@ use Pronamic\WordPress\Pay\Util as Pay_Util;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 1.2.7
+ * @version 2.0.5
  * @since   1.0.0
  */
 class Shortcodes {

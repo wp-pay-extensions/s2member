@@ -18,7 +18,7 @@ use WP_User;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.0
+ * @version 2.0.5
  * @since   1.0.0
  */
 class Extension {
@@ -56,6 +56,8 @@ class Extension {
 		add_action( 'pronamic_payment_status_update_' . $slug, array( __CLASS__, 'status_update' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_text_' . $slug, array( __CLASS__, 'source_text' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_description_' . $slug, array( __CLASS__, 'source_description' ), 10, 2 );
+		add_filter( 'pronamic_subscription_source_text_' . $slug, array( __CLASS__, 'subscription_source_text' ), 10, 2 );
+		add_filter( 'pronamic_subscription_source_description_' . $slug, array( __CLASS__, 'subscription_source_description' ), 10, 2 );
 
 		$option_name = 'pronamic_pay_s2member_signup_email_message';
 		add_filter( 'default_option_' . $option_name, array( __CLASS__, 'default_option_s2member_signup_email_message' ) );
@@ -412,6 +414,30 @@ Best Regards,
 	 * @return string
 	 */
 	public static function source_description( $description, Payment $payment ) {
+		return __( 's2Member', 'pronamic_ideal' );
+	}
+
+	/**
+	 * Subscription source text.
+	 *
+	 * @param string       $text         Source text.
+	 * @param Subscription $subscription Subscription.
+	 *
+	 * @return string
+	 */
+	public static function subscription_source_text( $text, Subscription $subscription ) {
+		return __( 's2Member', 'pronamic_ideal' );
+	}
+
+	/**
+	 * Subscription source description.
+	 *
+	 * @param string       $description  Source description.
+	 * @param Subscription $subscription Subscription.
+	 *
+	 * @return string
+	 */
+	public static function subscription_source_description( $description, Subscription $subscription ) {
 		return __( 's2Member', 'pronamic_ideal' );
 	}
 }

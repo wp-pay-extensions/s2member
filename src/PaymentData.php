@@ -16,7 +16,7 @@ use Pronamic\WordPress\Pay\Subscriptions\Subscription;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.1
+ * @version 2.0.5
  * @since   1.0.0
  */
 class PaymentData extends Pay_PaymentData {
@@ -90,7 +90,7 @@ class PaymentData extends Pay_PaymentData {
 		$item->set_price( $this->data['cost'] );
 		$item->set_quantity( 1 );
 
-		$items->addItem( $item );
+		$items->add_item( $item );
 
 		return $items;
 	}

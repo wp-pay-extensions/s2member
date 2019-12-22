@@ -7,6 +7,10 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 - 
 
+## [2.0.5] - 2019-12-22
+- Updated subscription source details.
+- Updated usage of deprecated `addItem()` method.
+
 ## [2.0.4] - 2019-10-04
 - Send user first and last name to list servers.
 - Added s2Member plugin dependency.
@@ -63,7 +67,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2015-01-20
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/2.0.4...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/2.0.5...HEAD
+[2.0.4]: https://github.com/wp-pay-extensions/s2member/compare/2.0.4...2.0.5
 [2.0.4]: https://github.com/wp-pay-extensions/s2member/compare/2.0.3...2.0.4
 [2.0.3]: https://github.com/wp-pay-extensions/s2member/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/wp-pay-extensions/s2member/compare/2.0.1...2.0.2

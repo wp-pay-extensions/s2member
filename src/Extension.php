@@ -360,10 +360,10 @@ Best Regards,
 		$email = $subscription->get_meta( 'email' );
 
 		// Subject.
-		$subject = get_option( 'pronamic_pay_s2member_subscription_renewal_notice_email_subject' );
+		$subject = (string) get_option( 'pronamic_pay_s2member_subscription_renewal_notice_email_subject' );
 
 		// Message.
-		$message = get_option( 'pronamic_pay_s2member_subscription_renewal_notice_email_message' );
+		$message = (string) get_option( 'pronamic_pay_s2member_subscription_renewal_notice_email_message' );
 
 		if ( '' === trim( $message ) ) {
 			return;
@@ -376,7 +376,9 @@ Best Regards,
 			return;
 		}
 
-		$subscription_renewal_date = date_i18n( get_option( 'date_format' ), $next_payment_date->getTimestamp() );
+		$date_format = \get_option( 'date_format', \pronamic_pay_plugin()->datetime_format( '' ) );
+
+		$subscription_renewal_date = date_i18n( $date_format, $next_payment_date->getTimestamp() );
 
 		$replacements = array(
 			'%%email%%'                     => $email,

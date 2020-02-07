@@ -21,13 +21,19 @@ use WP_User;
  * @version 2.0.5
  * @since   1.0.0
  */
-class Extension {
+class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	/**
 	 * Slug
 	 *
 	 * @var string
 	 */
 	const SLUG = 's2member';
+
+	public function __construct() {
+		parent::__construct();
+
+		self::bootstrap();
+	}
 
 	/**
 	 * Bootstrap

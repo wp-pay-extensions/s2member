@@ -79,6 +79,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 * Default option s2Member signup email message
 	 *
 	 * @param string $default Default.
+	 * @return string
 	 */
 	public static function default_option_s2member_signup_email_message( $default ) {
 		$default = sprintf(
@@ -106,6 +107,7 @@ Best Regards,
 	 * Default option s2Member subscription renewal notice email subject.
 	 *
 	 * @param string $default Default.
+	 * @return string
 	 */
 	public static function default_option_s2member_subscription_renewal_notice_email_subject( $default ) {
 		return __( 'Subscription Renewal Notice', 'pronamic_ideal' ) . ' | ' . get_bloginfo( 'name' );
@@ -115,6 +117,7 @@ Best Regards,
 	 * Default option s2Member subscription renewal notice email message.
 	 *
 	 * @param string $default Default.
+	 * @return string
 	 */
 	public static function default_option_s2member_subscription_renewal_notice_email_message( $default ) {
 		return sprintf(
@@ -141,6 +144,7 @@ Best Regards,
 	 * Update status.
 	 *
 	 * @param Payment $payment Payment.
+	 * @return void
 	 */
 	public static function update_status( Payment $payment ) {
 		if ( PaymentStatus::SUCCESS !== $payment->get_status() ) {
@@ -303,6 +307,7 @@ Best Regards,
 	 *
 	 * @param Payment $payment      Payment.
 	 * @param bool    $can_redirect Can redirect.
+	 * @return void
 	 */
 	public static function status_update( Payment $payment, $can_redirect = false ) {
 		$payment_data = Util::get_payment_data( $payment );
@@ -360,6 +365,7 @@ Best Regards,
 	 * Send subscription renewal notice
 	 *
 	 * @param Subscription $subscription Subscription.
+	 * @return void
 	 */
 	public static function subscription_renewal_notice( Subscription $subscription ) {
 		// Email address.
@@ -406,7 +412,6 @@ Best Regards,
 	 *
 	 * @param string  $text    Source text.
 	 * @param Payment $payment Payment.
-	 *
 	 * @return string
 	 */
 	public static function source_text( $text, Payment $payment ) {
@@ -418,7 +423,6 @@ Best Regards,
 	 *
 	 * @param string  $description Source description.
 	 * @param Payment $payment     Payment.
-	 *
 	 * @return string
 	 */
 	public static function source_description( $description, Payment $payment ) {
@@ -430,7 +434,6 @@ Best Regards,
 	 *
 	 * @param string       $text         Source text.
 	 * @param Subscription $subscription Subscription.
-	 *
 	 * @return string
 	 */
 	public static function subscription_source_text( $text, Subscription $subscription ) {
@@ -442,7 +445,6 @@ Best Regards,
 	 *
 	 * @param string       $description  Source description.
 	 * @param Subscription $subscription Subscription.
-	 *
 	 * @return string
 	 */
 	public static function subscription_source_description( $description, Subscription $subscription ) {

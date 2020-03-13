@@ -4,6 +4,7 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
 use c_ws_plugin__s2member_list_servers;
 use c_ws_plugin__s2member_utils_time;
+use Pronamic\WordPress\Pay\AbstractPluginIntegration;
 use Pronamic\WordPress\Pay\Core\Server;
 use Pronamic\WordPress\Pay\Payments\PaymentStatus;
 use Pronamic\WordPress\Pay\Core\Util as Core_Util;
@@ -21,7 +22,7 @@ use WP_User;
  * @version 2.0.5
  * @since   1.0.0
  */
-class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
+class Extension extends AbstractPluginIntegration {
 	/**
 	 * Slug
 	 *
@@ -29,24 +30,31 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 */
 	const SLUG = 's2member';
 
+	/**
+	 * Construct s2Member plugin integration.
+	 */
 	public function __construct() {
 		parent::__construct();
 
-		self::bootstrap();
+		// Dependencies.
+		$dependencies = $this->get_dependencies();
+
+		$dependencies->add( new S2MemberDependency() );
 	}
 
 	/**
-	 * Bootstrap
+	 * Setup plugin integration.
+	 *
+	 * @return void
 	 */
-	public static function bootstrap() {
-		add_action( 'plugins_loaded', array( __CLASS__, 'plugins_loaded' ), 100 );
-	}
+	public function setup() {
+		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
+		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
+		add_filter( 'pronamic_subscription_source_text_' . self::SLUG, array( $this, 'subscription_source_text' ), 10, 2 );
+		add_filter( 'pronamic_subscription_source_description_' . self::SLUG, array( $this, 'subscription_source_description' ), 10, 2 );
 
-	/**
-	 * Plugins loaded
-	 */
-	public static function plugins_loaded() {
-		if ( ! S2Member::is_active() ) {
+		// Check if dependencies are met and integration is active.
+		if ( ! $this->is_active() ) {
 			return;
 		}
 
@@ -60,10 +68,6 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 		add_action( 'pronamic_subscription_renewal_notice_' . self::SLUG, array( __CLASS__, 'subscription_renewal_notice' ) );
 
 		add_action( 'pronamic_payment_status_update_' . $slug, array( __CLASS__, 'status_update' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_text_' . $slug, array( __CLASS__, 'source_text' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_description_' . $slug, array( __CLASS__, 'source_description' ), 10, 2 );
-		add_filter( 'pronamic_subscription_source_text_' . $slug, array( __CLASS__, 'subscription_source_text' ), 10, 2 );
-		add_filter( 'pronamic_subscription_source_description_' . $slug, array( __CLASS__, 'subscription_source_description' ), 10, 2 );
 
 		$option_name = 'pronamic_pay_s2member_signup_email_message';
 		add_filter( 'default_option_' . $option_name, array( __CLASS__, 'default_option_s2member_signup_email_message' ) );

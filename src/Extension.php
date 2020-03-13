@@ -329,13 +329,6 @@ Best Regards,
 
 				break;
 			case PaymentStatus::EXPIRED:
-				$url = $data->get_error_url();
-
-				if ( $payment->get_recurring() ) {
-					Util::auto_eot_now_user_update( $user );
-				}
-
-				break;
 			case PaymentStatus::FAILURE:
 				$url = $data->get_error_url();
 

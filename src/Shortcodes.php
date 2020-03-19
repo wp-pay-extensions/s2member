@@ -10,7 +10,7 @@ use Pronamic\WordPress\Pay\Util as Pay_Util;
 /**
  * Title: s2Member shortcodes
  * Description:
- * Copyright: 2005-2019 Pronamic
+ * Copyright: 2005-2020 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
@@ -213,12 +213,6 @@ class Shortcodes {
 			return;
 		}
 
-		// Config.
-		$config_id = get_option( 'pronamic_pay_s2member_config_id' );
-
-		// Gateway.
-		$gateway = Plugin::get_gateway( $config_id );
-
 		// Data.
 		$data = new PaymentData( $data );
 
@@ -227,6 +221,11 @@ class Shortcodes {
 		if ( empty( $email ) ) {
 			return;
 		}
+
+		// Gateway.
+		$config_id = (int) \get_option( 'pronamic_pay_s2member_config_id' );
+
+		$gateway = Plugin::get_gateway( $config_id );
 
 		// Start.
 		$payment = Plugin::start( $config_id, $gateway, $data, $data->get_payment_method() );

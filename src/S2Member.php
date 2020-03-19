@@ -5,26 +5,14 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 /**
  * Title: s2Member
  * Description:
- * Copyright: 2005-2019 Pronamic
+ * Copyright: 2005-2020 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.0
+ * @version 2.1.0
  * @since   1.0.0
  */
 class S2Member {
-	/**
-	 * Check if s2Member is active (Automattic/developer style)
-	 *
-	 * @link https://github.com/WebSharks/s2Member/blob/130816/s2member/s2member.php#L69
-	 * @link https://github.com/Automattic/developer/blob/1.1.2/developer.php#L73
-	 *
-	 * @return boolean
-	 */
-	public static function is_active() {
-		return defined( 'WS_PLUGIN__S2MEMBER_VERSION' );
-	}
-
 	/**
 	 * Get periods
 	 *

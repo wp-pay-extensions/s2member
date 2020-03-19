@@ -1,6 +1,6 @@
 <?php
 /**
- * s2Member Dependency
+ * S2Member Dependency
  *
  * @author    Pronamic <info@pronamic.eu>
  * @copyright 2005-2020 Pronamic
@@ -13,7 +13,7 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 use Pronamic\WordPress\Pay\Dependencies\Dependency;
 
 /**
- * s2Member Dependency
+ * S2Member Dependency
  *
  * @author  Reüel van der Steege
  * @version 2.1.0

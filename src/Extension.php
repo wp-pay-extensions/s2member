@@ -34,7 +34,11 @@ class Extension extends AbstractPluginIntegration {
 	 * Construct s2Member plugin integration.
 	 */
 	public function __construct() {
-		parent::__construct();
+		parent::__construct(
+			array(
+				'name' => __( 's2Member', 'pronamic_ideal' ),
+			)
+		);
 
 		// Dependencies.
 		$dependencies = $this->get_dependencies();

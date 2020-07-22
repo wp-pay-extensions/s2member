@@ -36,6 +36,8 @@ class Shortcodes {
 	 * Constructs and initializes s2Member pay shortcodes
 	 */
 	public function __construct() {
+		add_action( 'init', array( $this, 'handle_payment' ) );
+
 		add_shortcode( 'pronamic_ideal_s2member', array( $this, 'shortcode_pay' ) );
 	}
 
@@ -73,8 +75,6 @@ class Shortcodes {
 	 * @return string
 	 */
 	public function shortcode_pay( $atts ) {
-		$this->handle_payment();
-
 		$this->index ++;
 
 		$defaults = array(

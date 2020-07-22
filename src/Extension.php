@@ -207,13 +207,26 @@ Best Regards,
 			$user = new WP_User( $user_id );
 
 			// Update subscription post author.
-			if ( $payment->get_subscription_id() ) {
-				$arg = array(
-					'ID'          => $payment->get_subscription_id(),
-					'post_author' => $user->ID,
-				);
+			$subscription = $payment->get_subscription();
 
-				wp_update_post( $arg );
+			if ( null !== $subscription ) {
+				$customer = $subscription->get_customer();
+
+				if ( null !== $customer ) {
+					$customer->set_user_id( $user_id );
+
+					$subscription->set_customer( $customer );
+
+					$subscription->save();
+				}
+
+				// Update subscription post author.
+				wp_update_post(
+					array(
+						'ID'          => $subscription->get_id(),
+						'post_author' => $user->ID,
+					)
+				);
 			}
 		}
 

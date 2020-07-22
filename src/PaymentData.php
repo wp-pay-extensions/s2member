@@ -2,7 +2,6 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
-use Pronamic\WordPress\Money\Money;
 use Pronamic\WordPress\Money\TaxedMoney;
 use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
 use Pronamic\WordPress\Pay\Payments\Item;
@@ -36,16 +35,14 @@ class PaymentData extends Pay_PaymentData {
 
 		$user_subscription_id = get_user_option( 's2member_subscr_id', $this->get_user_id() );
 
-		if ( '' !== $user_subscription_id ) {
+		if ( ! empty( $user_subscription_id ) ) {
 			$this->subscription = new Subscription( $user_subscription_id );
 		}
 
 		if ( ! empty( $data['subscription_id'] ) ) {
 			$this->subscription = new Subscription( $data['subscription_id'] );
 
-			if ( $this->subscription ) {
-				$this->recurring = true;
-			}
+			$this->recurring = true;
 		}
 	}
 

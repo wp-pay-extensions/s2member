@@ -302,7 +302,7 @@ Best Regards,
 		}
 
 		// Subscribe with list servers.
-		if ( Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'process_list_servers' ) ) {
+		if ( ! $payment->get_recurring() && Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'process_list_servers' ) ) {
 			// IP address.
 			$ip = Server::get( 'REMOTE_ADDR' );
 

@@ -125,8 +125,8 @@ use Pronamic\WordPress\Pay\Extensions\S2Member\S2Member;
 							<input type="text" size="50" class="jPronamicIdealButtonTextShortcode" />
 							<?php
 
-							/* translators: %s: Pay */
-							$label = __( 'Default: <code>%s</code>.', 'pronamic_ideal' );
+							/* translators: %s: default code */
+							$label = __( 'Default: <code>%s</code>', 'pronamic_ideal' );
 
 							printf(
 								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

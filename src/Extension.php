@@ -406,9 +406,18 @@ Best Regards,
 
 		$subscription_renewal_date = date_i18n( $date_format, $next_payment_date->getTimestamp() );
 
+		// Get amount from current phase.
+		$amount = null;
+
+		$current_phase = $subscription->get_current_phase();
+
+		if ( null !== $current_phase ) {
+			$amount = $current_phase->get_amount()->format_i18n();
+		}
+
 		$replacements = array(
 			'%%email%%'                     => $email,
-			'%%amount%%'                    => $subscription->get_total_amount()->format_i18n(),
+			'%%amount%%'                    => $amount,
 			'%%subscription_cancel_url%%'   => $subscription->get_cancel_url(),
 			'%%subscription_renewal_url%%'  => $subscription->get_renewal_url(),
 			'%%subscription_renewal_date%%' => $subscription_renewal_date,

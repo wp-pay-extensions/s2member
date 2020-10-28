@@ -232,7 +232,18 @@ Best Regards,
 
 		// Set s2Member subscription ID.
 		update_user_option( $user->ID, 's2member_subscr_gateway', $payment->get_method() );
-		update_user_option( $user->ID, 's2member_subscr_id', $payment->get_subscription_id() );
+
+		$periods = $payment->get_periods();
+
+		if ( null !== $periods ) {
+			foreach ( $periods as $period ) {
+				$subscription_id = $period->get_phase()->get_subscription()->get_id();
+
+				if ( null !== $subscription_id ) {
+					update_user_option( $user->ID, 's2member_subscr_id', $subscription_id );
+				}
+			}
+		}
 
 		$level  = $data->get_level();
 		$period = $data->get_period();

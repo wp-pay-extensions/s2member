@@ -87,28 +87,41 @@ class Util {
 	 * @return array
 	 */
 	public static function get_payment_data( Payment $payment ) {
-		if ( $payment->get_recurring() ) {
-			return array(
-				'level'           => get_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_level', true ),
-				'period'          => get_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_period', true ),
-				'ccaps'           => get_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_ccaps', true ),
-				'recurring'       => 'Y',
-				'subscription_id' => $payment->get_subscription_id(),
-			);
+		// Get subscription ID from payment periods.
+		$subscription_id = null;
+
+		$periods = $payment->get_periods();
+
+		if ( null !== $periods ) {
+			foreach ( $periods as $period ) {
+				$subscription_id = $period->get_phase()->get_subscription()->get_id();
+			}
 		}
+
+		// Determine post ID and recurring.
+		$post_id = $payment->get_id();
+
+		$meta_prefix = '_pronamic_payment_';
 
 		$recurring = null;
 
-		if ( $payment->get_subscription_id() ) {
+		if ( null !== $subscription_id ) {
+			if ( $payment->get_recurring() ) {
+				$post_id = $subscription_id;
+
+				$meta_prefix = '_pronamic_subscription_';
+			}
+
 			$recurring = 'Y';
 		}
 
+		// Return payment data.
 		return array(
-			'level'           => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', true ),
-			'period'          => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', true ),
-			'ccaps'           => get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', true ),
+			'level'           => get_post_meta( $post_id, $meta_prefix . 's2member_level', true ),
+			'period'          => get_post_meta( $post_id, $meta_prefix . 's2member_period', true ),
+			'ccaps'           => get_post_meta( $post_id, $meta_prefix . 's2member_ccaps', true ),
 			'recurring'       => $recurring,
-			'subscription_id' => $payment->get_subscription_id(),
+			'subscription_id' => $subscription_id,
 		);
 	}
 }

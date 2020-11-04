@@ -234,9 +234,9 @@ class Shortcodes {
 		$subscription = $payment->get_subscription();
 
 		if ( null !== $subscription ) {
-			$period = $subscription->new_period();
+			$payment->add_period( $subscription->new_period() );
 
-			$payment->add_period( $period );
+			$subscription->save();
 
 			$payment->save();
 		}

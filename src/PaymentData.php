@@ -7,6 +7,8 @@ use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
 use Pronamic\WordPress\Pay\Payments\Item;
 use Pronamic\WordPress\Pay\Payments\Items;
 use Pronamic\WordPress\Pay\Subscriptions\Subscription;
+use Pronamic\WordPress\Pay\Subscriptions\SubscriptionInterval;
+use Pronamic\WordPress\Pay\Subscriptions\SubscriptionPhase;
 
 /**
  * Title: s2Member payment data
@@ -167,18 +169,19 @@ class PaymentData extends Pay_PaymentData {
 			$subscription = $this->subscription;
 		} else {
 			$subscription = new Subscription();
+
+			// Phase.
+			$phase = new SubscriptionPhase(
+				$subscription,
+				new \DateTimeImmutable(),
+				new SubscriptionInterval( 'P' . $interval . $interval_period ),
+				new TaxedMoney( $this->get_amount()->get_value(), $this->get_currency_alphabetic_code() )
+			);
+
+			$subscription->add_phase( $phase );
 		}
 
-		$subscription->interval        = $interval;
-		$subscription->interval_period = $interval_period;
-		$subscription->description     = $this->get_description();
-
-		$subscription->set_total_amount(
-			new TaxedMoney(
-				$this->get_amount()->get_value(),
-				$this->get_currency_alphabetic_code()
-			)
-		);
+		$subscription->set_description( $this->get_description() );
 
 		return $subscription;
 	}

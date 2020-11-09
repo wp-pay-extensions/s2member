@@ -7,6 +7,10 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 - 
 
+## [2.2.0] - 2020-11-09
+- Added support for new subscription phases and periods.
+- Fixed processing list servers for recurring payments.
+
 ## [2.1.3] - 2020-07-22
 - Fix creating empty subscriptions.
 
@@ -79,7 +83,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2015-01-20
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/2.1.3...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/2.2.0...HEAD
+[2.2.0]: https://github.com/wp-pay-extensions/s2member/compare/2.1.3...2.2.0
 [2.1.3]: https://github.com/wp-pay-extensions/s2member/compare/2.1.2...2.1.3
 [2.1.2]: https://github.com/wp-pay-extensions/s2member/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/wp-pay-extensions/s2member/compare/2.1.0...2.1.1

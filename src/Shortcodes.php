@@ -230,6 +230,17 @@ class Shortcodes {
 		// Start.
 		$payment = Plugin::start( $config_id, $gateway, $data, $data->get_payment_method() );
 
+		// Add subscription period to payment.
+		$subscription = $payment->get_subscription();
+
+		if ( null !== $subscription ) {
+			$payment->add_period( $subscription->new_period() );
+
+			$subscription->save();
+
+			$payment->save();
+		}
+
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data->get_period() );
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', $data->get_level() );
 		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', $data->get_ccaps() );
@@ -239,10 +250,21 @@ class Shortcodes {
 			update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_opt_in', $opt_in );
 		}
 
-		if ( $payment->get_subscription_id() ) {
-			update_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_period', $data->get_period() );
-			update_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_level', $data->get_level() );
-			update_post_meta( $payment->get_subscription_id(), '_pronamic_subscription_s2member_ccaps', $data->get_ccaps() );
+		// Add s2Member meta to subscription.
+		$periods = $payment->get_periods();
+
+		if ( null !== $periods ) {
+			foreach ( $periods as $period ) {
+				$subscription_id = $period->get_phase()->get_subscription()->get_id();
+
+				if ( null === $subscription_id ) {
+					continue;
+				}
+
+				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_period', $data->get_period() );
+				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_level', $data->get_level() );
+				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_ccaps', $data->get_ccaps() );
+			}
 		}
 
 		$error = $gateway->get_error();

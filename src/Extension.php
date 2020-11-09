@@ -232,7 +232,18 @@ Best Regards,
 
 		// Set s2Member subscription ID.
 		update_user_option( $user->ID, 's2member_subscr_gateway', $payment->get_method() );
-		update_user_option( $user->ID, 's2member_subscr_id', $payment->get_subscription_id() );
+
+		$periods = $payment->get_periods();
+
+		if ( null !== $periods ) {
+			foreach ( $periods as $period ) {
+				$subscription_id = $period->get_phase()->get_subscription()->get_id();
+
+				if ( null !== $subscription_id ) {
+					update_user_option( $user->ID, 's2member_subscr_id', $subscription_id );
+				}
+			}
+		}
 
 		$level  = $data->get_level();
 		$period = $data->get_period();
@@ -302,7 +313,7 @@ Best Regards,
 		}
 
 		// Subscribe with list servers.
-		if ( Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'process_list_servers' ) ) {
+		if ( ! $payment->get_recurring() && Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'process_list_servers' ) ) {
 			// IP address.
 			$ip = Server::get( 'REMOTE_ADDR' );
 
@@ -406,9 +417,18 @@ Best Regards,
 
 		$subscription_renewal_date = date_i18n( $date_format, $next_payment_date->getTimestamp() );
 
+		// Get amount from current phase.
+		$amount = null;
+
+		$current_phase = $subscription->get_current_phase();
+
+		if ( null !== $current_phase ) {
+			$amount = $current_phase->get_amount()->format_i18n();
+		}
+
 		$replacements = array(
 			'%%email%%'                     => $email,
-			'%%amount%%'                    => $subscription->get_total_amount()->format_i18n(),
+			'%%amount%%'                    => $amount,
 			'%%subscription_cancel_url%%'   => $subscription->get_cancel_url(),
 			'%%subscription_renewal_url%%'  => $subscription->get_renewal_url(),
 			'%%subscription_renewal_date%%' => $subscription_renewal_date,

@@ -251,7 +251,7 @@ class Shortcodes {
 			// Set error message.
 			$this->error[ $index ] = array(
 				Plugin::get_default_error_message(),
-				__( 'The payment gateway could not be found.', 'pronamic_ideal' )
+				__( 'The payment gateway could not be found.', 'pronamic_ideal' ),
 			);
 
 			return;
@@ -464,15 +464,13 @@ class Shortcodes {
 		}
 
 		// Start.
-		$error = null;
-
 		try {
 			$payment = Plugin::start_payment( $payment );
 		} catch ( \Exception $e ) {
 			// Set error message.
 			$this->error[ $index ] = array(
 				Plugin::get_default_error_message(),
-				$e->getMessage()
+				$e->getMessage(),
 			);
 		}
 

@@ -71,8 +71,6 @@ class Extension extends AbstractPluginIntegration {
 		add_action( 'pronamic_payment_status_update_' . $slug, array( __CLASS__, 'update_status' ), 10, 1 );
 		add_action( 'pronamic_subscription_renewal_notice_' . self::SLUG, array( __CLASS__, 'subscription_renewal_notice' ) );
 
-		add_action( 'pronamic_payment_status_update_' . $slug, array( __CLASS__, 'status_update' ), 10, 2 );
-
 		$option_name = 'pronamic_pay_s2member_signup_email_message';
 		add_filter( 'default_option_' . $option_name, array( __CLASS__, 'default_option_s2member_signup_email_message' ) );
 
@@ -155,6 +153,23 @@ Best Regards,
 	 * @return void
 	 */
 	public static function update_status( Payment $payment ) {
+		// Check failed recurring payment.
+		if ( $payment->get_recurring() ) {
+			switch ( $payment->get_status() ) {
+				case PaymentStatus::CANCELLED:
+				case PaymentStatus::EXPIRED:
+				case PaymentStatus::FAILURE:
+					$user = get_user_by( 'email', $payment->get_email() );
+
+					if ( false !== $user ) {
+						Util::auto_eot_now_user_update( $user );
+					}
+
+					return;
+			}
+		}
+
+		// Continue with successful payments only.
 		if ( PaymentStatus::SUCCESS !== $payment->get_status() ) {
 			return;
 		}
@@ -329,58 +344,6 @@ Best Regards,
 			$opt_in = 1 === \intval( get_post_meta( $payment->get_id(), '_pronamic_payment_s2member_opt_in', true ) );
 
 			c_ws_plugin__s2member_list_servers::process_list_servers( $role, $level, $email, $random_string, $email, $first_name, $last_name, $ip, $opt_in, true, $user->ID );
-		}
-	}
-
-	/**
-	 * Status update.
-	 *
-	 * @param Payment $payment      Payment.
-	 * @param bool    $can_redirect Can redirect.
-	 * @return void
-	 */
-	public static function status_update( Payment $payment, $can_redirect = false ) {
-		$payment_data = Util::get_payment_data( $payment );
-
-		$data = new PaymentData( $payment_data );
-
-		$url = $data->get_normal_return_url();
-
-		// Get account by email.
-		$user = get_user_by( 'email', $payment->get_email() );
-
-		switch ( $payment->status ) {
-			case PaymentStatus::CANCELLED:
-				$url = $data->get_cancel_url();
-
-				if ( $payment->get_recurring() ) {
-					Util::auto_eot_now_user_update( $user );
-				}
-
-				break;
-			case PaymentStatus::EXPIRED:
-			case PaymentStatus::FAILURE:
-				$url = $data->get_error_url();
-
-				if ( $payment->get_recurring() ) {
-					Util::auto_eot_now_user_update( $user );
-				}
-
-				break;
-			case PaymentStatus::SUCCESS:
-				$url = $data->get_success_url();
-
-				break;
-			case PaymentStatus::OPEN:
-				$url = $data->get_normal_return_url();
-
-				break;
-		}
-
-		if ( $url && $can_redirect ) {
-			wp_redirect( $url );
-
-			exit;
 		}
 	}
 

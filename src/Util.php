@@ -124,4 +124,27 @@ class Util {
 			'subscription_id' => $subscription_id,
 		);
 	}
+
+	/**
+	 * Get email address from logged in user or form input.
+	 *
+	 * @return string|null
+	 */
+	public static function get_user_input_email() {
+		$email = null;
+
+		// Get email from logged in user.
+		if ( \is_user_logged_in() ) {
+			$user = \wp_get_current_user();
+
+			$email = $user->user_email;
+		}
+
+		// Get email from form input.
+		if ( \filter_has_var( \INPUT_POST, 'pronamic_pay_s2member_email' ) ) {
+			$email = (string) \filter_input( \INPUT_POST, 'pronamic_pay_s2member_email', \FILTER_VALIDATE_EMAIL );
+		}
+
+		return $email;
+	}
 }

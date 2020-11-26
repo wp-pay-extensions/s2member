@@ -161,8 +161,6 @@ Best Regards,
 
 		$payment_data = Util::get_payment_data( $payment );
 
-		$data = new PaymentData( $payment_data );
-
 		$email = $payment->get_email();
 
 		// Get account from email address.
@@ -245,9 +243,9 @@ Best Regards,
 			}
 		}
 
-		$level  = $data->get_level();
-		$period = $data->get_period();
-		$ccaps  = $data->get_ccaps();
+		$level  = $payment_data['level'];
+		$period = $payment_data['period'];
+		$ccaps  = $payment_data['ccaps'];
 
 		$capability = 'access_s2member_level' . $level;
 		$role       = 's2member_level' . $level;

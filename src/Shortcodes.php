@@ -3,8 +3,19 @@
 namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
 use c_ws_plugin__s2member_list_servers;
+use Pronamic\WordPress\DateTime\DateTime;
+use Pronamic\WordPress\Money\TaxedMoney;
+use Pronamic\WordPress\Pay\Address;
+use Pronamic\WordPress\Pay\ContactName;
 use Pronamic\WordPress\Pay\Core\Util as Core_Util;
+use Pronamic\WordPress\Pay\Customer;
+use Pronamic\WordPress\Pay\Payments\Payment;
+use Pronamic\WordPress\Pay\Payments\PaymentLines;
 use Pronamic\WordPress\Pay\Plugin;
+use Pronamic\WordPress\Pay\Subscriptions\Subscription;
+use Pronamic\WordPress\Pay\Subscriptions\SubscriptionHelper;
+use Pronamic\WordPress\Pay\Subscriptions\SubscriptionInterval;
+use Pronamic\WordPress\Pay\Subscriptions\SubscriptionPhase;
 use Pronamic\WordPress\Pay\Util as Pay_Util;
 
 /**
@@ -117,8 +128,19 @@ class Shortcodes {
 			}
 		}
 
-		// Data.
-		$data = new PaymentData( $atts );
+		// Period.
+		$period = \str_replace( ' ', '', $atts['period'] );
+
+		if ( ! empty( $period ) ) {
+			$interval_value = (int) $period;
+
+			$interval = (object) array(
+				'value' => $interval_value,
+				'unit'  => \str_replace( $interval_value, '', $period ),
+			);
+
+			$atts['period'] = sprintf( '%d %s', $interval->value, $interval->unit );
+		}
 
 		// Hash.
 		$hash_data = array(
@@ -149,7 +171,7 @@ class Shortcodes {
 				'<input id="%s" name="%s" value="%s" type="text" />',
 				esc_attr( 'pronamic_pay_s2member_email' ),
 				esc_attr( 'pronamic_pay_s2member_email' ),
-				$data->get_email()
+				(string) Util::get_user_input_email()
 			);
 			$output .= ' ';
 		}
@@ -214,9 +236,7 @@ class Shortcodes {
 		}
 
 		// Data.
-		$data = new PaymentData( $data );
-
-		$email = $data->get_email();
+		$email = Util::get_user_input_email();
 
 		if ( empty( $email ) ) {
 			return;
@@ -227,23 +247,236 @@ class Shortcodes {
 
 		$gateway = Plugin::get_gateway( $config_id );
 
-		// Start.
-		$payment = Plugin::start( $config_id, $gateway, $data, $data->get_payment_method() );
+		if ( null === $gateway ) {
+			// Set error message.
+			$this->error[ $index ] = array(
+				Plugin::get_default_error_message(),
+				__( 'The payment gateway could not be found.', 'pronamic_ideal' ),
+			);
 
-		// Add subscription period to payment.
-		$subscription = $payment->get_subscription();
-
-		if ( null !== $subscription ) {
-			$payment->add_period( $subscription->new_period() );
-
-			$subscription->save();
-
-			$payment->save();
+			return;
 		}
 
-		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data->get_period() );
-		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', $data->get_level() );
-		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', $data->get_ccaps() );
+		/*
+		 * Payment.
+		 */
+		$payment = new Payment();
+
+		$order_id = $data['order_id'];
+
+		$replacements = array(
+			'{{order_id}}' => $order_id,
+		);
+
+		$description = strtr( $data['description'], $replacements );
+
+		$payment->set_config_id( $config_id );
+		$payment->set_description( $description );
+
+		$payment->method   = $data['payment_method'];
+		$payment->order_id = $order_id;
+
+		// Source.
+		$payment->set_source( 's2member' );
+		$payment->set_source_id( $order_id );
+
+		// Data.
+		$user = \wp_get_current_user();
+
+		$first_name = $user->first_name;
+		$last_name  = $user->last_name;
+		$user_id    = \get_current_user_id();
+
+		// Name.
+		$name = null;
+
+		$name_data = array(
+			$first_name,
+			$last_name,
+		);
+
+		$name_data = array_filter( $name_data );
+
+		if ( ! empty( $name_data ) ) {
+			$name = new ContactName();
+
+			if ( ! empty( $first_name ) ) {
+				$name->set_first_name( $first_name );
+			}
+
+			if ( ! empty( $last_name ) ) {
+				$name->set_last_name( $last_name );
+			}
+		}
+
+		// Customer.
+		$customer_data = array(
+			$name,
+			$email,
+			$user_id,
+		);
+
+		$customer_data = array_filter( $customer_data );
+
+		if ( ! empty( $customer_data ) ) {
+			$customer = new Customer();
+
+			$customer->set_name( $name );
+			$customer->set_email( $email );
+
+			if ( ! empty( $user_id ) ) {
+				$customer->set_user_id( (int) $user_id );
+			}
+
+			$payment->set_customer( $customer );
+		}
+
+		// Billing address.
+		$address_data = array(
+			$name,
+			$email,
+		);
+
+		$address_data = array_filter( $address_data );
+
+		if ( ! empty( $address_data ) ) {
+			$address = new Address();
+
+			if ( ! empty( $name ) ) {
+				$address->set_name( $name );
+			}
+
+			$address->set_email( $email );
+
+			$payment->set_billing_address( $address );
+		}
+
+		// Lines.
+		$payment->lines = new PaymentLines();
+
+		$line = $payment->lines->new_line();
+
+		$price = new TaxedMoney( $data['cost'], 'EUR' );
+
+		$line->set_name( $description );
+		$line->set_quantity( 1 );
+		$line->set_unit_price( $price );
+		$line->set_total_amount( $price );
+
+		$payment->set_total_amount( $payment->lines->get_amount() );
+
+		// Subscription.
+		if ( 'Y' === $data['recurring'] && isset( $data['period'] ) && ! empty( $data['period'] ) ) {
+			// Find existing subscription.
+			$subscription = null;
+
+			$start_date = new \DateTimeImmutable();
+
+			if ( ! empty( $data['subscription_id'] ) ) {
+				$subscription = \get_pronamic_subscription( (int) $data['subscription_id'] );
+			}
+
+			$user_subscription_id = \get_user_option( 's2member_subscr_id', $user_id );
+
+			if ( null === $subscription && ! empty( $user_subscription_id ) ) {
+				$subscription = \get_pronamic_subscription( (int) $user_subscription_id );
+			}
+
+			// Cancel active phases.
+			if ( null !== $subscription ) {
+				foreach ( $subscription->get_phases() as $phase ) {
+					// Check if phase has already been completed.
+					if ( $phase->all_periods_created() ) {
+						continue;
+					}
+
+					// Check if phase is already canceled.
+					$canceled_at = $phase->get_canceled_at();
+
+					if ( ! empty( $canceled_at ) ) {
+						continue;
+					}
+
+					// Set start date for new phases (before setting canceled date).
+					$next_date = $phase->get_next_date();
+
+					if ( null !== $next_date ) {
+						$start_date = $next_date;
+					}
+
+					// Set canceled date.
+					$phase->set_canceled_at( new \DateTimeImmutable() );
+				}
+
+				$payment->subscription_id = $subscription->get_id();
+			}
+
+			// New subscription.
+			if ( null === $subscription ) {
+				$subscription = new Subscription();
+			}
+
+			// Data.
+			$subscription->set_description( $description );
+			$subscription->set_lines( $payment->get_lines() );
+
+			// Phase.
+			$period = \str_replace( ' ', '', $data['period'] );
+
+			$interval_value = (int) $period;
+
+			$interval = (object) array(
+				'value' => $interval_value,
+				'unit'  => \str_replace( $interval_value, '', $period ),
+			);
+
+			$phase = new SubscriptionPhase(
+				$subscription,
+				$start_date,
+				new SubscriptionInterval( 'P' . $interval->value . Core_Util::to_period( $interval->unit ) ),
+				$price
+			);
+
+			$subscription->add_phase( $phase );
+
+			$period = $subscription->new_period();
+
+			if ( null !== $period ) {
+				$payment->add_period( $period );
+			}
+
+			// Update existing subscription dates.
+			if ( null !== $payment->subscription_id ) {
+				$next_payment_date = $phase->get_next_date();
+
+				if ( null !== $next_payment_date ) {
+					$next_payment_date = DateTime::create_from_immutable( $next_payment_date );
+				}
+
+				$subscription->set_next_payment_date( $next_payment_date );
+				$subscription->set_next_payment_delivery_date( SubscriptionHelper::calculate_next_payment_delivery_date( $subscription ) );
+
+				$subscription->set_expiry_date( DateTime::create_from_immutable( $start_date ) );
+			}
+
+			$payment->subscription           = $subscription;
+			$payment->subscription_source_id = $payment->get_source_id();
+		}
+
+		// Start.
+		try {
+			$payment = Plugin::start_payment( $payment );
+		} catch ( \Exception $e ) {
+			// Set error message.
+			$this->error[ $index ] = array(
+				Plugin::get_default_error_message(),
+				$e->getMessage(),
+			);
+		}
+
+		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_period', $data['period'] );
+		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_level', $data['level'] );
+		update_post_meta( $payment->get_id(), '_pronamic_payment_s2member_ccaps', $data['ccaps'] );
 
 		// List server opt-in.
 		if ( ! empty( $opt_in ) ) {
@@ -261,22 +494,13 @@ class Shortcodes {
 					continue;
 				}
 
-				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_period', $data->get_period() );
-				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_level', $data->get_level() );
-				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_ccaps', $data->get_ccaps() );
+				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_period', $data['period'] );
+				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_level', $data['level'] );
+				update_post_meta( $subscription_id, '_pronamic_subscription_s2member_ccaps', $data['ccaps'] );
 			}
 		}
 
-		$error = $gateway->get_error();
-
-		if ( is_wp_error( $error ) ) {
-			// Set error message.
-			$this->error[ $index ] = array( Plugin::get_default_error_message() );
-
-			foreach ( $error->get_error_messages() as $message ) {
-				$this->error[ $index ][] = $message;
-			}
-		} else {
+		if ( ! \array_key_exists( $index, $this->error ) ) {
 			// Redirect.
 			$gateway->redirect( $payment );
 		}

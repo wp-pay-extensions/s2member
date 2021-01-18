@@ -21,7 +21,7 @@ use Pronamic\WordPress\Pay\Util as Pay_Util;
 /**
  * Title: s2Member shortcodes
  * Description:
- * Copyright: 2005-2020 Pronamic
+ * Copyright: 2005-2021 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma

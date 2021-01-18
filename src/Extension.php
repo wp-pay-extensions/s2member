@@ -15,7 +15,7 @@ use WP_User;
 /**
  * Title: s2Member extension
  * Description:
- * Copyright: 2005-2020 Pronamic
+ * Copyright: 2005-2021 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma

@@ -22,7 +22,7 @@ class Settings {
 	}
 
 	/**
-	 * Admin intialize
+	 * Admin initialize
 	 */
 	public function admin_init() {
 		// Settings - General

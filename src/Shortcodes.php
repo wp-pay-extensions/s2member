@@ -75,7 +75,7 @@ class Shortcodes {
 	 * period represents one of the predetermined durations they can
 	 * selected from the dropdown.
 	 *
-	 * cost is set by the shortcode generator.  Must be ISO standard format ( . as decimal seperator )
+	 * cost is set by the shortcode generator.  Must be ISO standard format ( . as decimal separator )
 	 *
 	 * level is the level access upon payment will be granted.
 	 *

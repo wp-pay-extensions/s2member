@@ -81,7 +81,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 - Added HTML admin views from the Pronamic iDEAL plugin.
 
 ## [1.1.1] - 2015-03-03
-- Changed WordPress pay core library requirment from `~1.0.0` to `>=1.0.0`.
+- Changed WordPress pay core library requirement from `~1.0.0` to `>=1.0.0`.
 
 ## [1.1.0] - 2015-02-12
 - Show errors if they occur.

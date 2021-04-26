@@ -5,7 +5,7 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 /**
  * Title: s2Member settings
  * Description:
- * Copyright: 2005-2020 Pronamic
+ * Copyright: 2005-2021 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
@@ -22,7 +22,7 @@ class Settings {
 	}
 
 	/**
-	 * Admin intialize
+	 * Admin initialize
 	 */
 	public function admin_init() {
 		// Settings - General

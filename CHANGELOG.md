@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 - 
 
+## [2.2.2] - 2021-04-26
+- Happy 2021.
+
 ## [2.2.1] - 2021-01-14
 - Prevent updating eot if (retry) payment period end date is (before) current eot time.
 - Code quality.
@@ -81,7 +84,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 - Added HTML admin views from the Pronamic iDEAL plugin.
 
 ## [1.1.1] - 2015-03-03
-- Changed WordPress pay core library requirment from `~1.0.0` to `>=1.0.0`.
+- Changed WordPress pay core library requirement from `~1.0.0` to `>=1.0.0`.
 
 ## [1.1.0] - 2015-02-12
 - Show errors if they occur.
@@ -89,7 +92,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2015-01-20
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/2.2.1...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/s2member/compare/2.2.2...HEAD
+[2.2.2]: https://github.com/wp-pay-extensions/s2member/compare/2.2.1...2.2.2
 [2.2.1]: https://github.com/wp-pay-extensions/s2member/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/wp-pay-extensions/s2member/compare/2.1.3...2.2.0
 [2.1.3]: https://github.com/wp-pay-extensions/s2member/compare/2.1.2...2.1.3

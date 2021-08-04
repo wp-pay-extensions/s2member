@@ -4,7 +4,7 @@ namespace Pronamic\WordPress\Pay\Extensions\S2Member;
 
 use c_ws_plugin__s2member_list_servers;
 use Pronamic\WordPress\DateTime\DateTime;
-use Pronamic\WordPress\Money\TaxedMoney;
+use Pronamic\WordPress\Money\Money;
 use Pronamic\WordPress\Pay\Address;
 use Pronamic\WordPress\Pay\ContactName;
 use Pronamic\WordPress\Pay\Core\Util as Core_Util;
@@ -356,7 +356,7 @@ class Shortcodes {
 
 		$line = $payment->lines->new_line();
 
-		$price = new TaxedMoney( $data['cost'], 'EUR' );
+		$price = new Money( $data['cost'], 'EUR' );
 
 		$line->set_name( $description );
 		$line->set_quantity( 1 );

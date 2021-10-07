@@ -272,8 +272,8 @@ class Shortcodes {
 
 		$payment->set_config_id( $config_id );
 		$payment->set_description( $description );
+		$payment->set_payment_method( $data['payment_method'] );
 
-		$payment->method   = $data['payment_method'];
 		$payment->order_id = $order_id;
 
 		// Source.

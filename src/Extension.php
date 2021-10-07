@@ -244,7 +244,7 @@ Best Regards,
 		}
 
 		// Set s2Member subscription ID.
-		update_user_option( $user->ID, 's2member_subscr_gateway', $payment->get_method() );
+		update_user_option( $user->ID, 's2member_subscr_gateway', $payment->get_payment_method() );
 
 		$periods = $payment->get_periods();
 

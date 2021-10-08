@@ -323,7 +323,7 @@ Best Regards,
 			}
 
 			if ( $should_update_eot ) {
-				if ( $payment->get_recurring() ) {
+				if ( \count( $subscriptions ) > 0 ) {
 					add_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
 
 					// Calculate EOT time for period from today.
@@ -339,7 +339,7 @@ Best Regards,
 		}
 
 		// Subscribe with list servers.
-		if ( ! $payment->get_recurring() && Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'process_list_servers' ) ) {
+		if ( 0 === \count( $subscriptions ) && Core_Util::class_method_exists( 'c_ws_plugin__s2member_list_servers', 'process_list_servers' ) ) {
 			// IP address.
 			$ip = Server::get( 'REMOTE_ADDR' );
 

@@ -87,6 +87,9 @@ class Util {
 	 * @return array
 	 */
 	public static function get_payment_data( Payment $payment ) {
+		// Subscriptions.
+		$subscriptions = $payment->get_subscriptions();
+
 		// Get subscription ID from payment periods.
 		$subscription_id = null;
 
@@ -106,7 +109,7 @@ class Util {
 		$recurring = null;
 
 		if ( null !== $subscription_id ) {
-			if ( $payment->get_recurring() ) {
+			if ( \count( $subscriptions ) > 0 ) {
 				$post_id = $subscription_id;
 
 				$meta_prefix = '_pronamic_subscription_';

@@ -414,6 +414,9 @@ class Shortcodes {
 			// New subscription.
 			if ( null === $subscription ) {
 				$subscription = new Subscription();
+
+				$subscription->set_source( 's2member' );
+				$subscription->set_source_id( $order_id );
 			}
 
 			// Data.
@@ -459,8 +462,7 @@ class Shortcodes {
 				$subscription->set_expiry_date( DateTime::create_from_immutable( $start_date ) );
 			}
 
-			$payment->subscription           = $subscription;
-			$payment->subscription_source_id = $payment->get_source_id();
+			$payment->subscription = $subscription;
 		}
 
 		// Start.

@@ -154,7 +154,9 @@ Best Regards,
 	 */
 	public static function update_status( Payment $payment ) {
 		// Check failed recurring payment.
-		if ( $payment->get_recurring() ) {
+		$subscriptions = $payment->get_subscriptions();
+
+		if ( \count( $subscriptions ) > 0 ) {
 			switch ( $payment->get_status() ) {
 				case PaymentStatus::CANCELLED:
 				case PaymentStatus::EXPIRED:

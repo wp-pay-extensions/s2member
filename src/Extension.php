@@ -183,7 +183,7 @@ Best Regards,
 		// Get account from email address.
 		$user = get_user_by( 'email', $email );
 
-		if ( ! $user && $payment->get_recurring() ) {
+		if ( ! $user && \count( $subscriptions ) > 0 ) {
 			// Invalid user for recurring payment, abort to prevent account creation.
 			return;
 		}

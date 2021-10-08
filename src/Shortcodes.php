@@ -407,8 +407,6 @@ class Shortcodes {
 					// Set canceled date.
 					$phase->set_canceled_at( new \DateTimeImmutable() );
 				}
-
-				$payment->subscription_id = $subscription->get_id();
 			}
 
 			// New subscription.
@@ -449,7 +447,7 @@ class Shortcodes {
 			}
 
 			// Update existing subscription dates.
-			if ( null !== $payment->subscription_id ) {
+			if ( null !== $payment->subscription ) {
 				$next_payment_date = $phase->get_next_date();
 
 				if ( null !== $next_payment_date ) {

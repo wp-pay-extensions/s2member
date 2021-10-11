@@ -459,8 +459,6 @@ class Shortcodes {
 
 				$subscription->set_expiry_date( DateTime::create_from_immutable( $start_date ) );
 			}
-
-			$payment->add_subscription( $subscription );
 		}
 
 		// Start.

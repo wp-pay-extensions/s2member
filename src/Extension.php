@@ -316,7 +316,15 @@ Best Regards,
 			// Prevent updating eot if (retry) payment period end date is (before) current eot time.
 			$should_update_eot = true;
 
-			$end_date = $payment->get_end_date();
+			$periods = $payment->get_periods();
+
+			if ( null !== $periods ) {
+				$end_date = null;
+
+				foreach ( $periods as $period ) {
+					$end_date = \max( $end_date, $period->get_end_date() );
+				}
+			}
 
 			if ( null !== $end_date && $end_date->getTimestamp() <= $eot_time_current ) {
 				$should_update_eot = false;

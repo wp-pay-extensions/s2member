@@ -454,8 +454,11 @@ class Shortcodes {
 					$next_payment_date = DateTime::create_from_immutable( $next_payment_date );
 				}
 
-				$subscription->set_next_payment_date( $next_payment_date );
-				$subscription->set_next_payment_delivery_date( SubscriptionHelper::calculate_next_payment_delivery_date( $subscription ) );
+				/**
+				 * Next payment date?
+				 *
+				 * @todo See older implementation.
+				 */
 			}
 		}
 

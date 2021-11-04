@@ -450,10 +450,6 @@ class Shortcodes {
 			if ( null !== $payment->subscription ) {
 				$next_payment_date = $phase->get_next_date();
 
-				if ( null !== $next_payment_date ) {
-					$next_payment_date = DateTime::create_from_immutable( $next_payment_date );
-				}
-
 				/**
 				 * Next payment date?
 				 *

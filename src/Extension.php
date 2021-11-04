@@ -161,10 +161,18 @@ Best Regards,
 				case PaymentStatus::CANCELLED:
 				case PaymentStatus::EXPIRED:
 				case PaymentStatus::FAILURE:
-					$user = get_user_by( 'email', $payment->get_email() );
+					$customer = $payment->get_customer();
 
-					if ( false !== $user ) {
-						Util::auto_eot_now_user_update( $user );
+					if ( null !== $customer ) {
+						$email = $customer->get_email();
+
+						if ( null !== $email ) {
+							$user = get_user_by( 'email', $email );
+
+							if ( false !== $user ) {
+								Util::auto_eot_now_user_update( $user );
+							}
+						}
 					}
 
 					return;
@@ -178,10 +186,21 @@ Best Regards,
 
 		$payment_data = Util::get_payment_data( $payment );
 
-		$email = $payment->get_email();
+		$user = false;
 
-		// Get account from email address.
-		$user = get_user_by( 'email', $email );
+		$customer = $payment->get_customer();
+
+		if ( null !== $customer ) {
+			$email = $customer->get_email();
+
+			if ( null !== $email ) {
+				$user = get_user_by( 'email', $email );
+
+				if ( false !== $user ) {
+					Util::auto_eot_now_user_update( $user );
+				}
+			}
+		}
 
 		if ( ! $user && \count( $subscriptions ) > 0 ) {
 			// Invalid user for recurring payment, abort to prevent account creation.

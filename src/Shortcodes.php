@@ -456,8 +456,6 @@ class Shortcodes {
 
 				$subscription->set_next_payment_date( $next_payment_date );
 				$subscription->set_next_payment_delivery_date( SubscriptionHelper::calculate_next_payment_delivery_date( $subscription ) );
-
-				$subscription->set_expiry_date( DateTime::create_from_immutable( $start_date ) );
 			}
 		}
 

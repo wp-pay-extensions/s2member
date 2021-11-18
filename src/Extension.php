@@ -6,6 +6,7 @@ use c_ws_plugin__s2member_list_servers;
 use c_ws_plugin__s2member_utils_time;
 use Pronamic\WordPress\Pay\AbstractPluginIntegration;
 use Pronamic\WordPress\Pay\Core\Server;
+use Pronamic\WordPress\Pay\Customer;
 use Pronamic\WordPress\Pay\Payments\PaymentStatus;
 use Pronamic\WordPress\Pay\Core\Util as Core_Util;
 use Pronamic\WordPress\Pay\Payments\Payment;
@@ -241,18 +242,20 @@ Best Regards,
 			$user = new WP_User( $user_id );
 
 			// Update subscription post author.
-			$subscription = $payment->get_subscription();
+			$subscriptions = $payment->get_subscriptions();
 
-			if ( null !== $subscription ) {
+			foreach ( $subscriptions as $subscription ) {
 				$customer = $subscription->get_customer();
 
-				if ( null !== $customer ) {
-					$customer->set_user_id( $user_id );
-
-					$subscription->set_customer( $customer );
-
-					$subscription->save();
+				if ( null === $customer ) {
+					$customer = new Customer();
 				}
+
+				$customer->set_user_id( $user_id );
+
+				$subscription->set_customer( $customer );
+
+				$subscription->save();
 
 				// Update subscription post author.
 				wp_update_post(

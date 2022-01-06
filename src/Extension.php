@@ -357,11 +357,11 @@ Best Regards,
 					add_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
 
 					// Calculate EOT time for period from today.
-					$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( 0, '', '', $period, 0, $eot_time_current );
+					$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( 0, '', '', $payment_data['period'], 0, $eot_time_current );
 
 					remove_filter( 'ws_plugin__s2member_eot_grace_time', '__return_zero' );
 				} else {
-					$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( $user->ID, '', $period, false, $eot_time_current );
+					$eot_time_new = c_ws_plugin__s2member_utils_time::auto_eot_time( $user->ID, '', $payment_data['period'], false, $eot_time_current );
 				}
 
 				update_user_option( $user->ID, 's2member_auto_eot_time', $eot_time_new );

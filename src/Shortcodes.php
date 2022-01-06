@@ -104,9 +104,6 @@ class Shortcodes {
 
 		$atts['order_id'] = uniqid();
 
-		// Output.
-		$output = '';
-
 		// Get the config ID.
 		$config_id = get_option( 'pronamic_pay_s2member_config_id' );
 
@@ -114,8 +111,15 @@ class Shortcodes {
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( ! $gateway ) {
-			return $output;
+			return current_user_can( 'manage_options' ) ?
+				\sprintf( 
+					'<p>' . __( '<p><em>No payment gateway could be found for this s2Member pay shortcode for gateway configuration ID: <code>%s</code>.</em>', 'pronamic_ideal' ) . '</p>',
+					\esc_html( $config_id )
+				) : '';
 		}
+
+		// Output.
+		$output = '';
 
 		if ( null !== $atts['payment_method'] ) {
 			$supported_payment_methods = $gateway->get_supported_payment_methods();

@@ -97,7 +97,6 @@ class Shortcodes {
 			'ccaps'           => null,
 			'payment_method'  => null,
 			'recurring'       => null,
-			'subscription_id' => null,
 		);
 
 		// Combine the passed options.
@@ -152,7 +151,6 @@ class Shortcodes {
 			'ccaps'           => $atts['ccaps'],
 			'payment_method'  => $atts['payment_method'],
 			'recurring'       => $atts['recurring'],
-			'subscription_id' => $atts['subscription_id'],
 		);
 
 		// Output.
@@ -203,7 +201,6 @@ class Shortcodes {
 				'pronamic_pay_s2member_data[ccaps]'       => $atts['ccaps'],
 				'pronamic_pay_s2member_data[payment_method]' => $atts['payment_method'],
 				'pronamic_pay_s2member_data[recurring]'   => $atts['recurring'],
-				'pronamic_pay_s2member_data[subscription_id]' => $atts['subscription_id'],
 			)
 		);
 

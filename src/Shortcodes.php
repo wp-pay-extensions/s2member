@@ -89,14 +89,14 @@ class Shortcodes {
 		$this->index ++;
 
 		$defaults = array(
-			'period'          => null,
-			'cost'            => null,
-			'level'           => null,
-			'description'     => __( 'iDEAL s2Member Payment || {{order_id}}', 'pronamic_ideal' ),
-			'button_text'     => __( 'Pay', 'pronamic_ideal' ),
-			'ccaps'           => null,
-			'payment_method'  => null,
-			'recurring'       => null,
+			'period'         => null,
+			'cost'           => null,
+			'level'          => null,
+			'description'    => __( 'iDEAL s2Member Payment || {{order_id}}', 'pronamic_ideal' ),
+			'button_text'    => __( 'Pay', 'pronamic_ideal' ),
+			'ccaps'          => null,
+			'payment_method' => null,
+			'recurring'      => null,
 		);
 
 		// Combine the passed options.
@@ -143,14 +143,14 @@ class Shortcodes {
 
 		// Hash.
 		$hash_data = array(
-			'order_id'        => $atts['order_id'],
-			'period'          => $atts['period'],
-			'cost'            => $atts['cost'],
-			'level'           => $atts['level'],
-			'description'     => $atts['description'],
-			'ccaps'           => $atts['ccaps'],
-			'payment_method'  => $atts['payment_method'],
-			'recurring'       => $atts['recurring'],
+			'order_id'       => $atts['order_id'],
+			'period'         => $atts['period'],
+			'cost'           => $atts['cost'],
+			'level'          => $atts['level'],
+			'description'    => $atts['description'],
+			'ccaps'          => $atts['ccaps'],
+			'payment_method' => $atts['payment_method'],
+			'recurring'      => $atts['recurring'],
 		);
 
 		// Output.

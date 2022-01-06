@@ -203,11 +203,6 @@ Best Regards,
 			}
 		}
 
-		if ( ! $user && \count( $subscriptions ) > 0 ) {
-			// Invalid user for recurring payment, abort to prevent account creation.
-			return;
-		}
-
 		$random_string = '';
 
 		// No valid user?

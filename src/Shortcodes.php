@@ -369,10 +369,6 @@ class Shortcodes {
 
 			$start_date = new \DateTimeImmutable();
 
-			if ( ! empty( $data['subscription_id'] ) ) {
-				$subscription = \get_pronamic_subscription( (int) $data['subscription_id'] );
-			}
-
 			$user_subscription_id = \get_user_option( 's2member_subscr_id', $user_id );
 
 			if ( null === $subscription && ! empty( $user_subscription_id ) ) {

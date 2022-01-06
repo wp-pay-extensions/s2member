@@ -442,17 +442,6 @@ class Shortcodes {
 			if ( null !== $period ) {
 				$payment->add_period( $period );
 			}
-
-			// Update existing subscription dates.
-			if ( null !== $payment->subscription ) {
-				$next_payment_date = $phase->get_next_date();
-
-				/**
-				 * Next payment date?
-				 *
-				 * @todo See older implementation.
-				 */
-			}
 		}
 
 		// Start.

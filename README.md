@@ -1,4 +1,4 @@
-# WordPress Pay Extension: s2Member
+# [DEPRECATED] WordPress Pay Extension: s2Member
 
 **s2Member driver for the WordPress payment processing library.**
 
